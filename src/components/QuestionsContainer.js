@@ -1,5 +1,5 @@
-import Question from "./Question"
 import { connect } from "react-redux"
+import Question from "./Question"
 
 function QuestionsContainer(props) {
     return (
@@ -8,10 +8,10 @@ function QuestionsContainer(props) {
                 {props.title}
             </h1>
             <div className="flex border border-black p-2 grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {props.sortedQuestionIds.map((id) => (
+                {props.questionIds?.map((id) => (
                     <Question
                         key={id}
-                        question={props.questions.byId[id]}
+                        id={id}
                     ></Question>
                 ))}
             </div>
@@ -19,11 +19,9 @@ function QuestionsContainer(props) {
     )
 }
 
-const mapStateToProps = ({ questions }) => ({
-    questions,
-    sortedQuestionIds: Object.keys(questions.byId).sort(
-        (a, b) => questions.byId[b].timestamp - questions.byId[a].timestamp
-    ),
+const mapStateToProps = ({ authedUser, questions }) => ({
+    authedUser,
+    questions
 })
 
 export default connect(mapStateToProps)(QuestionsContainer)

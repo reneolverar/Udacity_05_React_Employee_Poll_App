@@ -10,7 +10,7 @@ import PollsDashboard from "./components/PollsDashboard"
 import Leaderboard from "./components/Leaderboard"
 import LogIn from "./components/LogIn"
 import NewPoll from "./components/CreatePoll"
-import Poll from "./components/Poll"
+import PollDetails from "./components/PollDetails"
 
 function App(props) {
     useEffect(() => {
@@ -40,8 +40,8 @@ function App(props) {
                         element={<NewPoll />}
                     />
                     <Route
-                        path="/poll"
-                        element={<Poll />}
+                        exact path="/poll/:id"
+                        element={<PollDetails />}
                     />
                 </Routes>
             )}

@@ -6,6 +6,43 @@ import {
 } from "./_DATA.js"
 import { formatDate, normalize } from "./helpers.js"
 
+// Users object array format
+// users = {
+//     byId: {
+//         id: {
+//             id,
+//             password,
+//             name,
+//             avatarURL,
+//             answers: {
+//                 questionId: questionAnswer,
+//             },
+//             questions: [id]
+//         },
+//     },
+//     allIds: [id],
+// }
+
+// Questions object array format
+// questions = {
+//     byId: {
+//         id: {
+//             id,
+//             author,
+//             timestamp,
+//             optionOne: {
+//                 votes: [userId],
+//                 text
+//             },
+//             optionTwo: {
+//                 votes: [userId],
+//                 text
+//             }
+//         }
+//     },
+//     allIds: [id]
+// }
+
 export function getInitialData() {
     return Promise.all([_getUsers(), _getQuestions()]).then(
         ([users, questions]) => {
@@ -13,15 +50,15 @@ export function getInitialData() {
                 if (Object.hasOwnProperty.call(questions, key)) {
                     questions[key] = {
                         ...questions[key],
-                        timestamp: formatDate(questions[key].timestamp)
+                        timestamp: formatDate(questions[key].timestamp),
                     }
-
                 }
             }
-            return ({
-            users: normalize(users),
-            questions: normalize(questions),
-        })}
+            return {
+                users: normalize(users),
+                questions: normalize(questions),
+            }
+        }
     )
 }
 
