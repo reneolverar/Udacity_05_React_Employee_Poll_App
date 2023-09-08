@@ -11,6 +11,7 @@ import Leaderboard from "./components/Leaderboard"
 import LogIn from "./components/LogIn"
 import NewPoll from "./components/CreatePoll"
 import PollDetails from "./components/PollDetails"
+import LoadingBar from "react-redux-loading-bar";
 
 function App(props) {
     useEffect(() => {
@@ -20,6 +21,7 @@ function App(props) {
     return (
         <div className="App">
             <Nav></Nav>
+            <LoadingBar />
             {props.loading === true ? null : (
                 <Routes>
                     <Route
