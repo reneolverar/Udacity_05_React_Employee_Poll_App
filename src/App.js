@@ -1,6 +1,9 @@
 import "./App.css"
 
 import { Routes, Route } from "react-router-dom"
+import { useEffect } from "react"
+import { connect } from "react-redux"
+import { handleInitialData } from "./actions/shared"
 
 import Nav from "./components/Nav"
 import PollsDashboard from "./components/PollsDashboard"
@@ -9,35 +12,45 @@ import LogIn from "./components/LogIn"
 import NewPoll from "./components/CreatePoll"
 import Poll from "./components/Poll"
 
-function App() {
+function App(props) {
+    useEffect(() => {
+        props.dispatch(handleInitialData())
+    }, [])
+
     return (
         <div className="App">
             <Nav></Nav>
-            <Routes>
-                <Route
-                    path="/"
-                    element={<PollsDashboard />}
-                />
-                <Route
-                    // index
-                    path="/leaderboard"
-                    element={<Leaderboard />}
-                />
-                <Route
-                    path="/login"
-                    element={<LogIn />}
-                />
-                <Route
-                    path="/newpoll"
-                    element={<NewPoll />}
-                />
-                <Route
-                    path="/poll"
-                    element={<Poll />}
-                />
-            </Routes>
+            {props.loading === true ? null : (
+                <Routes>
+                    <Route
+                        path="/"
+                        element={<PollsDashboard />}
+                    />
+                    <Route
+                        // index
+                        path="/leaderboard"
+                        element={<Leaderboard />}
+                    />
+                    <Route
+                        path="/login"
+                        element={<LogIn />}
+                    />
+                    <Route
+                        path="/newpoll"
+                        element={<NewPoll />}
+                    />
+                    <Route
+                        path="/poll"
+                        element={<Poll />}
+                    />
+                </Routes>
+            )}
         </div>
     )
 }
 
-export default App
+const mapStateToProps = ({ authedUser }) => ({
+    loading: authedUser === null,
+})
+
+export default connect(mapStateToProps)(App)
