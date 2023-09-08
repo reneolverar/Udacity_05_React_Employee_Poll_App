@@ -2,7 +2,6 @@
 import { useState } from "react"
 
 export default function CreatePoll() {
-
     const [optionOne, setOptionOne] = useState("")
     const [optionTwo, setOptionTwo] = useState("")
 
@@ -11,7 +10,10 @@ export default function CreatePoll() {
         console.log(optionOne, optionTwo)
     }
     return (
-        <form onSubmit={handleSubmit} className="text-center my-5">
+        <form
+            onSubmit={handleSubmit}
+            className="text-center my-5"
+        >
             <h1 className="text-2xl">Would you rather:</h1>
             <p className="text-gray-600">Create your own poll</p>
             <p>First Option</p>

@@ -16,7 +16,11 @@ function PollDetails(props) {
             <img
                 className="m-auto"
                 src={author.avatharURL || "/employee-poll-logo.png"}
-                alt={author.avatharURL ? `${author.name} Avatar` : "App logo instead of avatar"}
+                alt={
+                    author.avatharURL
+                        ? `${author.name} Avatar`
+                        : "App logo instead of avatar"
+                }
                 width={150}
                 height={150}
             ></img>
@@ -65,4 +69,4 @@ const mapStateToProps = ({ authedUser, questions, users }, props) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps)(PollDetails));
+export default withRouter(connect(mapStateToProps)(PollDetails))

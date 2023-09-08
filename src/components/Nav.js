@@ -2,7 +2,7 @@ import { Fragment } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom"
 
 const navTabs = [
     { name: "Home", href: "/", current: true },
@@ -19,19 +19,18 @@ export default function Example() {
 
     const handleClick = (e) => {
         setNavigation(
-            navigation.map(nav => (
-                nav.name === e.target.name ?
-                    {
-                        ...nav,
-                        current: true
-                    } :
-                    {
-                        ...nav,
-                        current: false
-                    }
-            ))
+            navigation.map((nav) =>
+                nav.name === e.target.name
+                    ? {
+                          ...nav,
+                          current: true,
+                      }
+                    : {
+                          ...nav,
+                          current: false,
+                      }
+            )
         )
-
     }
     return (
         <Disclosure

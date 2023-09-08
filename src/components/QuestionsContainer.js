@@ -21,7 +21,7 @@ function QuestionsContainer(props) {
 
 const mapStateToProps = ({ authedUser, questions }) => ({
     authedUser,
-    questions
+    questions,
 })
 
 export default connect(mapStateToProps)(QuestionsContainer)

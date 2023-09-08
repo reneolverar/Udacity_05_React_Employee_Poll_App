@@ -25,11 +25,16 @@ function Leaderboard(props) {
                                     width={50}
                                     height={50}
                                 ></img>
-                                <p className="text-xl">{props.users.byId[id].name}</p>
+                                <p className="text-xl">
+                                    {props.users.byId[id].name}
+                                </p>
                                 <span>{props.users.byId[id].id}</span>
                             </td>
                             <td>
-                                {Object.keys(props.users.byId[id].answers).length}
+                                {
+                                    Object.keys(props.users.byId[id].answers)
+                                        .length
+                                }
                             </td>
                             <td>{props.users.byId[id].questions.length}</td>
                         </tr>
@@ -42,7 +47,7 @@ function Leaderboard(props) {
 
 const mapStateToProps = ({ authedUser, users }) => ({
     authedUser,
-    users
+    users,
 })
 
 export default connect(mapStateToProps)(Leaderboard)

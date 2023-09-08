@@ -1,7 +1,7 @@
 export default function LogIn() {
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(e);
+        console.log(e)
     }
     return (
         <div>

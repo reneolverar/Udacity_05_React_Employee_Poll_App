@@ -11,7 +11,7 @@ import Leaderboard from "./components/Leaderboard"
 import LogIn from "./components/LogIn"
 import NewPoll from "./components/CreatePoll"
 import PollDetails from "./components/PollDetails"
-import LoadingBar from "react-redux-loading-bar";
+import LoadingBar from "react-redux-loading-bar"
 
 function App(props) {
     useEffect(() => {
@@ -42,7 +42,8 @@ function App(props) {
                         element={<NewPoll />}
                     />
                     <Route
-                        exact path="/poll/:id"
+                        exact
+                        path="/poll/:id"
                         element={<PollDetails />}
                     />
                 </Routes>
