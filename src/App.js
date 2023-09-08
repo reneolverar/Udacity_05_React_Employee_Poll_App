@@ -3,10 +3,15 @@ import "./App.css"
 import { Routes, Route } from "react-router-dom"
 
 import Nav from "./components/Nav"
+import PollsDashboard from "./components/PollsDashboard"
+import Leaderboard from "./components/Leaderboard"
+import LogIn from "./components/LogIn"
+import NewPoll from "./components/CreatePoll"
+import Poll from "./components/Poll"
 
 function App() {
-  return (
-    <div className="App">
+    return (
+        <div className="App">
             <Nav></Nav>
             <Routes>
                 <Route
@@ -31,7 +36,7 @@ function App() {
                     element={<Poll />}
                 />
             </Routes>
-    </div>
+        </div>
     )
 }
 
