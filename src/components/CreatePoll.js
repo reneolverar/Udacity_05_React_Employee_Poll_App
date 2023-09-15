@@ -1,14 +1,28 @@
-"use client"
+import { connect } from "react-redux"
 import { useState } from "react"
+import { handleAddQuestion } from "../actions/questions"
+import { useNavigate } from "react-router-dom"
 
-export default function CreatePoll() {
-    const [optionOne, setOptionOne] = useState("")
-    const [optionTwo, setOptionTwo] = useState("")
+function CreatePoll(props) {
+    const navigate = useNavigate()
 
-    const handleSubmit = (e) => {
+    const { dispatch } = props
+    const [optionOneText, setOptionOneText] = useState("")
+    const [optionTwoText, setOptionTwoText] = useState("")
+
+    let disableForm = optionOneText === "" || optionTwoText === ""
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(optionOne, optionTwo)
+        const newQuestion = await dispatch(
+            handleAddQuestion(
+                optionOneText,
+                optionTwoText,
+            )
+        )
+        navigate(`/poll/${newQuestion.id}`)
     }
+
     return (
         <form
             onSubmit={handleSubmit}
@@ -16,23 +30,39 @@ export default function CreatePoll() {
         >
             <h1 className="text-2xl">Would you rather:</h1>
             <p className="text-gray-600">Create your own poll</p>
-            <p>First Option</p>
+            <label for="option-one-input">First Option*</label>
             <input
                 type="text"
                 placeholder="Option One"
-                value={optionOne}
-                onChange={(e) => setOptionOne(e.target.value) }
-                className=" w-full mx-5"
+                value={optionOneText}
+                onChange={(e) => setOptionOneText(e.target.value)}
+                className=" w-full m-2 border"
+                id="option-one-input"
             ></input>
-            <p>Second Option</p>
+            <label for="option-two-input">Second Option*</label>
             <input
                 type="text"
                 placeholder="Option Two"
-                value={optionTwo}
-                onChange={(e) => setOptionTwo(e.target.value)}
-                className=" w-full mx-5"
+                value={optionTwoText}
+                onChange={(e) => setOptionTwoText(e.target.value)}
+                className=" w-full m-2 border"
+                id="option-two-input"
             ></input>
-            <button className="button bg-gray-300">Submit</button>
+            {disableForm && <p className="opacity-50">*Please fill out all required fields</p>}
+            <button
+                disabled={disableForm}
+                className="button bg-gray-300 disabled:opacity-25"
+            >
+                Submit
+            </button>
         </form>
     )
 }
+
+const mapStateToProps = ({ authedUser }) => {
+    return {
+        authedUser,
+    }
+}
+
+export default connect(mapStateToProps)(CreatePoll)
