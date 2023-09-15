@@ -3,6 +3,8 @@ import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { useState } from "react"
 import { Link } from "react-router-dom"
+import { connect } from "react-redux"
+import { withRouter } from "../utils/helpers"
 
 const navTabs = [
     { name: "Home", href: "/", current: true },
@@ -14,7 +16,7 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
 }
 
-export default function Example() {
+function Nav(props) {
     const [navigation, setNavigation] = useState(navTabs)
 
     const handleClick = (e) => {
@@ -121,11 +123,25 @@ export default function Example() {
                                             <span className="sr-only">
                                                 Open user menu
                                             </span>
-                                            <img
-                                                className="h-8 w-8 rounded-full"
-                                                src="/employee-poll-logo.png"
-                                                alt="profile photo"
-                                            />
+                                            <div className=" text-center">
+                                                {props.authedUser ?
+                                                    <div>
+
+                                                    <img
+                                                    className="h-8 w-8 rounded-full m-auto"
+                                                    src="/employee-poll-logo.png"
+                                                    alt="profile photo"
+                                                    />
+                                                <span className="text-white">
+                                                    @{props.authedUser}
+                                                </span>
+                                                    </div> :
+                                                    <Link to="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                                                        LogIn
+                                                        </Link>
+                                                }
+
+                                            </div>
                                         </Menu.Button>
                                     </div>
                                     <Transition
@@ -217,3 +233,9 @@ export default function Example() {
         </Disclosure>
     )
 }
+
+const mapStateToProps = ({ authedUser }) => ({
+    authedUser,
+})
+
+export default withRouter(connect(mapStateToProps)(Nav))
