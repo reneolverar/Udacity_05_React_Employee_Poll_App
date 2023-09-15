@@ -1,7 +1,9 @@
-import { RECEIVE_QUESTIONS } from "../actions/questions"
-import { ADD_QUESTION } from "../actions/questions"
-import { REMOVE_QUESTION } from "../actions/questions"
-import { VOTE_QUESTION } from "../actions/questions"
+import {
+    RECEIVE_QUESTIONS,
+    ADD_QUESTION,
+    REMOVE_QUESTION,
+    VOTE_QUESTION,
+} from "../actions/questions"
 
 export default function questions(state = [], action) {
     switch (action.type) {
@@ -11,49 +13,49 @@ export default function questions(state = [], action) {
                 ...action.questions,
             }
         case ADD_QUESTION:
-            return [
-                ...state,
-                {
-                    ...action.question,
-                    timestamp: new Date().getDate(),
-                    optionOne: {
-                        ...action.question.optionOne,
-                        votes: [],
-                    },
-                    optionTwo: {
-                        ...action.question.optionTwo,
-                        votes: [],
+            const { question } = action
+            return {
+                byId: {
+                    ...state.byId,
+                    [question.id]: {
+                        ...question,
+                        optionOne: {
+                            ...question.optionOne,
+                            votes: [],
+                        },
+                        optionTwo: {
+                            ...question.optionTwo,
+                            votes: [],
+                        },
                     },
                 },
-            ]
+                allIds: [...state.allIds, question.id]
+            }
         case REMOVE_QUESTION:
-            return state.filter((question) => question.id !== action.id)
+            delete state.byId[question.id]
+            return {
+                byId: state.byId,
+                allIds: state.allIds.filter((id) => id !== action.id)
+            }
+
         case VOTE_QUESTION:
-            return state.map((question) =>
-                question.id !== action.questionId
-                    ? question
-                    : action.option === "optionOne"
-                    ? {
-                          ...question,
-                          optionOne: {
-                              ...question.optionOne,
-                              votes: [
-                                  ...question.optionOne.votes,
-                                  action.userId,
-                              ],
-                          },
-                      }
-                    : {
-                          ...question,
-                          optionTwo: {
-                              ...question.optionTwo,
-                              votes: [
-                                  ...question.optionTwo.votes,
-                                  action.userId,
-                              ],
-                          },
-                      }
-            )
+            console.log(state)
+            return {
+                ...state,
+                byId: {
+                    ...state.byId,
+                    [question.qid]: {
+                        ...state.byId[question.qid],
+                        [question.answer]: {
+                            ...state.byId[question.qid][question.answer],
+                            votes: [
+                                ...state.byId[question.qid][question.answer].votes,
+                                question.authedUser,
+                            ],
+                        },
+                    },
+                },
+            }
         default:
             return state
     }
