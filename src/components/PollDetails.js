@@ -1,13 +1,21 @@
 import { connect } from "react-redux"
 import { withRouter } from "../utils/helpers"
+import { handleVoteQuestion } from "../actions/questions"
 
 function PollDetails(props) {
-    const question = props.questions.byId[props.id]
-    const author = props.users.byId[question.author]
+    const { dispatch, id, authedUser, users, questions } = props
+    const question = questions.byId[id]
+    const author = users.byId[question.author]
 
     const handleClick = (e) => {
         e.preventDefault()
-        console.log(e.target.name)
+        dispatch(
+            handleVoteQuestion({
+                authedUser,
+                qid: id,
+                answer: e.target.name,
+            })
+        )
     }
     return (
         <div className="text-center">
