@@ -20,7 +20,8 @@ function CreatePoll(props) {
                 optionTwoText,
             )
         )
-        navigate(`/poll/${newQuestion.id}`)
+        // navigate(`/poll/${newQuestion.id}`)
+        navigate(`/`)
     }
 
     return (
@@ -30,7 +31,7 @@ function CreatePoll(props) {
         >
             <h1 className="text-2xl">Would you rather:</h1>
             <p className="text-gray-600">Create your own poll</p>
-            <label for="option-one-input">First Option*</label>
+            <label htmlFor="option-one-input">First Option*</label>
             <input
                 type="text"
                 placeholder="Option One"
@@ -39,7 +40,7 @@ function CreatePoll(props) {
                 className=" w-full m-2 border"
                 id="option-one-input"
             ></input>
-            <label for="option-two-input">Second Option*</label>
+            <label htmlFor="option-two-input">Second Option*</label>
             <input
                 type="text"
                 placeholder="Option Two"
