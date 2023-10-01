@@ -4,7 +4,7 @@ import {
     _saveQuestion,
     _saveQuestionAnswer,
 } from "./_DATA.js"
-import { formatDate, normalize } from "./helpers.js"
+import { normalize } from "./helpers.js"
 
 // Users object array format
 // users = {
@@ -43,22 +43,31 @@ import { formatDate, normalize } from "./helpers.js"
 //     allIds: [id]
 // }
 
+// export function getInitialData() {
+//     return Promise.all([_getUsers(), _getQuestions()]).then(
+//         ([users, questions]) => {
+//             for (const key in questions) {
+//                 if (Object.hasOwnProperty.call(questions, key)) {
+//                     questions[key] = {
+//                         ...questions[key],
+//                         timestamp: formatDate(questions[key].timestamp),
+//                     }
+//                 }
+//             }
+//             return {
+//                 users: normalize(users),
+//                 questions: normalize(questions),
+//             }
+//         }
+//     )
+// }
+
 export function getInitialData() {
     return Promise.all([_getUsers(), _getQuestions()]).then(
-        ([users, questions]) => {
-            for (const key in questions) {
-                if (Object.hasOwnProperty.call(questions, key)) {
-                    questions[key] = {
-                        ...questions[key],
-                        timestamp: formatDate(questions[key].timestamp),
-                    }
-                }
-            }
-            return {
-                users: normalize(users),
-                questions: normalize(questions),
-            }
-        }
+        ([users, questions]) => ({
+            users: normalize(users),
+            questions: normalize(questions),
+        })
     )
 }
 
