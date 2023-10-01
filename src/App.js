@@ -38,7 +38,7 @@ function App(props) {
                         element={<LogIn />}
                     />
                     <Route
-                        path="/newpoll"
+                        path="/add"
                         element={<NewPoll />}
                     />
                     <Route
