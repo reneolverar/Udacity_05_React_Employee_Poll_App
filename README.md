@@ -1,6 +1,12 @@
-# Getting Started with Create React App
+# Udacity React Nanodegree: Employee polls app
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the final project for the Udacity React Nanodegree. The app let´s you create, vote and share polls with other users. You can also see the leaderboard with the most active users.
+
+## Running the project
+
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). To run it, just type:
+
+`npm install` and then `npm start`
 
 ## Available Scripts
 
