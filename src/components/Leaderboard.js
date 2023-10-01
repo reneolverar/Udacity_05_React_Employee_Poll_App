@@ -1,4 +1,5 @@
 import { connect } from "react-redux"
+import { sortObjectArray } from "../utils/helpers"
 
 function Leaderboard(props) {
     return (
@@ -13,7 +14,7 @@ function Leaderboard(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.users.allIds.map((id) => (
+                    {props.sortedNumAnsweredIds.map((id) => (
                         <tr
                             key={id}
                             className="border border-neutral-500"
@@ -48,6 +49,7 @@ function Leaderboard(props) {
 const mapStateToProps = ({ authedUser, users }) => ({
     authedUser,
     users,
+    sortedNumAnsweredIds: sortObjectArray(users.byId, "answers", {byLength: true})
 })
 
 export default connect(mapStateToProps)(Leaderboard)

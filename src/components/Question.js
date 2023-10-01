@@ -1,5 +1,6 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import { connect } from "react-redux"
+import { formatDate } from "../utils/helpers"
 
 function Question(props) {
     const { author, timestamp } = props.questions.byId[props.id]
@@ -7,7 +8,7 @@ function Question(props) {
     return (
         <div className="border border-black rounded-md text-center h-32 shadow-md hover:shadow-lg">
             <h1 className="font-bold">{author}</h1>
-            <p>{timestamp}</p>
+            <p>{formatDate(timestamp)}</p>
             <Link to={`/poll/${props.id}`}>
                 <button className="button my-5 text-green-500 border border-green-500 rounded-md hover:bg-green-500 hover:text-white transition ease-out duration-500">
                     Show

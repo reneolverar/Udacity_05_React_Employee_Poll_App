@@ -9,7 +9,7 @@ import { withRouter } from "../utils/helpers"
 const navTabs = [
     { name: "Home", href: "/", current: true },
     { name: "Leaderboard", href: "/leaderboard", current: false },
-    { name: "New", href: "/newpoll", current: false },
+    { name: "New", href: "/add", current: false },
 ]
 
 function classNames(...classes) {
