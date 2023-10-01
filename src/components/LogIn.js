@@ -7,7 +7,7 @@ export default function LogIn() {
         <div>
             <h1 className="text-4xl uppercase">Employee Polls</h1>
             <img
-                src="/employee-poll-logo.png"
+                src="employee-poll-logo.png"
                 alt="Poll app logo"
             />
             <form onSubmit={handleSubmit}>

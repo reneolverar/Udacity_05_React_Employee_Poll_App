@@ -67,7 +67,7 @@ function Nav(props) {
                                 <div className="flex flex-shrink-0 items-center">
                                     <img
                                         className="h-8 w-auto rounded-full"
-                                        src="/employee-poll-logo.png"
+                                        src="employee-poll-logo.png"
                                         alt="employee poll logo"
                                     />
                                 </div>
@@ -129,7 +129,7 @@ function Nav(props) {
 
                                                     <img
                                                     className="h-8 w-8 rounded-full m-auto"
-                                                    src="/employee-poll-logo.png"
+                                                    src="employee-poll-logo.png"
                                                     alt="profile photo"
                                                     />
                                                 <span className="text-white">

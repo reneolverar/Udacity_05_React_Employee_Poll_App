@@ -45,7 +45,7 @@ function PollDetails(props) {
             <h2 className="text-lg text-gray-500">@{author.id}</h2>
             <img
                 className="m-auto"
-                src={author.avatharURL || "/employee-poll-logo.png"}
+                src={author.avatharURL || "employee-poll-logo.png"}
                 alt={
                     author.avatharURL
                         ? `${author.name} Avatar`

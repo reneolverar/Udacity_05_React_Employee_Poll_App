@@ -21,7 +21,7 @@ function Leaderboard(props) {
                         >
                             <td>
                                 <img
-                                    src="/employee-poll-logo.png"
+                                    src="employee-poll-logo.png"
                                     alt="Poll app logo"
                                     width={50}
                                     height={50}
