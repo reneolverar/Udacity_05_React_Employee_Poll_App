@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Link } from "react-router-dom"
 import { connect } from "react-redux"
 import { withRouter } from "../utils/helpers"
+import logo from "../assets/employee-poll-logo.png"
 
 const navTabs = [
     { name: "Home", href: "/", current: true },
@@ -67,7 +68,7 @@ function Nav(props) {
                                 <div className="flex flex-shrink-0 items-center">
                                     <img
                                         className="h-8 w-auto rounded-full"
-                                        src="employee-poll-logo.png"
+                                        src={logo}
                                         alt="employee poll logo"
                                     />
                                 </div>
@@ -129,7 +130,7 @@ function Nav(props) {
 
                                                     <img
                                                     className="h-8 w-8 rounded-full m-auto"
-                                                    src="employee-poll-logo.png"
+                                                    src={logo}
                                                     alt="profile photo"
                                                     />
                                                 <span className="text-white">

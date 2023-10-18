@@ -1,5 +1,6 @@
 import { connect } from "react-redux"
 import { sortObjectArray } from "../utils/helpers"
+import logo from "../assets/employee-poll-logo.png"
 
 function Leaderboard(props) {
     return (
@@ -21,7 +22,7 @@ function Leaderboard(props) {
                         >
                             <td>
                                 <img
-                                    src="employee-poll-logo.png"
+                                    src={logo}
                                     alt="Poll app logo"
                                     width={50}
                                     height={50}

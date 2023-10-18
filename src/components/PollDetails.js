@@ -3,6 +3,7 @@ import { withRouter } from "../utils/helpers"
 import { handleVoteQuestion } from "../actions/questions"
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import logo from "../assets/employee-poll-logo.png"
 
 function PollDetails(props) {
     const navigate = useNavigate()
@@ -45,7 +46,7 @@ function PollDetails(props) {
             <h2 className="text-lg text-gray-500">@{author.id}</h2>
             <img
                 className="m-auto"
-                src={author.avatharURL || "employee-poll-logo.png"}
+                src={author.avatharURL || logo}
                 alt={
                     author.avatharURL
                         ? `${author.name} Avatar`
