@@ -10,7 +10,7 @@ function Question(props) {
             <h1 className="font-bold">{author}</h1>
             <p>{formatDate(timestamp)}</p>
             <Link to={`/poll/${props.id}`}>
-                <button className="button my-5 text-green-500 border border-green-500 rounded-md hover:bg-green-500 hover:text-white transition ease-out duration-500">
+                <button className="button bt-green green my-5 ">
                     Show
                 </button>
             </Link>

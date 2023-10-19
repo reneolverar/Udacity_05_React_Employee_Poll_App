@@ -2,23 +2,31 @@ import { connect } from "react-redux"
 import { withRouter } from "../utils/helpers"
 import { handleVoteQuestion } from "../actions/questions"
 import { useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import logo from "../assets/employee-poll-logo.png"
 
 function PollDetails(props) {
     const navigate = useNavigate()
     const { dispatch, id, authedUser, users, questions } = props
-    const question = questions.byId[id]
-    const author = users.byId[question.author]
+
+    useEffect(() => {
+        if (!questions.byId[id]) {
+            navigate("/pageNotFound/falseId")
+            return
+        }
+    }, [])
 
     const [voteMessage, setVoteMessage] = useState(
         "*You already voted for this option. You can´t change your vote or vote again"
     )
 
-    const votedOptionOne = question.optionOne.votes.includes(authedUser)
-    const votedOptionTwo = question.optionTwo.votes.includes(authedUser)
-    const optionOneVotes = question.optionOne.votes.length
-    const optionTwoVotes = question.optionTwo.votes.length
+    const question = questions.byId[id]
+    const author = users.byId[question?.author]
+
+    const votedOptionOne = question?.optionOne.votes.includes(authedUser)
+    const votedOptionTwo = question?.optionTwo.votes.includes(authedUser)
+    const optionOneVotes = question?.optionOne.votes.length
+    const optionTwoVotes = question?.optionTwo.votes.length
 
     const percentage = (nom, den) => {
         if (nom === 0) {
@@ -40,16 +48,17 @@ function PollDetails(props) {
         )
         setVoteMessage("Thank you for voting!")
     }
+
     return (
         <div className="text-center">
-            <h1 className="text-2xl">Poll by {author.name}</h1>
-            <h2 className="text-lg text-gray-500">@{author.id}</h2>
+            <h1 className="text-2xl">Poll by {author?.name}</h1>
+            <h2 className="text-lg text-gray-500">@{author?.id}</h2>
             <img
                 className="m-auto"
-                src={author.avatharURL || logo}
+                src={author?.avatharURL || logo}
                 alt={
-                    author.avatharURL
-                        ? `${author.name} Avatar`
+                    author?.avatharURL
+                        ? `${author?.name} Avatar`
                         : "App logo instead of avatar"
                 }
                 width={150}
@@ -59,7 +68,7 @@ function PollDetails(props) {
             <div className="flex justify-around items-stretch">
                 <div className="w-full px-1 min-h-full">
                     <label className="border w-full text-center p-1 inline-block min-h-full">
-                        {question.optionOne.text}
+                        {question?.optionOne.text}
                     </label>
                     <button
                         className="block bg- bg-teal-600 text-white w-full disabled:opacity-25"
@@ -81,7 +90,7 @@ function PollDetails(props) {
                 </div>
                 <div className=" w-full px-1">
                     <label className="border w-full text-center p-1 inline-block min-h-full">
-                        {question.optionTwo.text}
+                        {question?.optionTwo.text}
                     </label>
                     <button
                         className="block bg- bg-teal-600 text-white w-full disabled:opacity-25"

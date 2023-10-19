@@ -6,6 +6,7 @@ import { Link } from "react-router-dom"
 import { connect } from "react-redux"
 import { withRouter } from "../utils/helpers"
 import logo from "../assets/employee-poll-logo.png"
+import { setAuthedUser } from "../actions/authedUser"
 
 const navTabs = [
     { name: "Home", href: "/", current: true },
@@ -13,11 +14,14 @@ const navTabs = [
     { name: "New", href: "/add", current: false },
 ]
 
+const menuItems = ["Log out"]
+
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
 }
 
 function Nav(props) {
+    const { dispatch } = props
     const [navigation, setNavigation] = useState(navTabs)
 
     const handleClick = (e) => {
@@ -34,6 +38,18 @@ function Nav(props) {
                       }
             )
         )
+    }
+
+    const handleMenuItemClick = (e) => {
+        switch (e.target.id) {
+            case "Log out":
+                dispatch(setAuthedUser(null))
+                break;
+
+            default:
+                break;
+        }
+
     }
     return (
         <Disclosure
@@ -155,7 +171,12 @@ function Nav(props) {
                                         leaveTo="transform opacity-0 scale-95"
                                     >
                                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                            <Menu.Item>
+                                            {menuItems.map((item) =>
+                                                <Menu.Item
+                                                    key={item}
+                                                    id={item}
+                                                    onClick={handleMenuItemClick}
+                                                >
                                                 {({ active }) => (
                                                     <a
                                                         href="#"
@@ -166,40 +187,11 @@ function Nav(props) {
                                                             "block px-4 py-2 text-sm text-gray-700"
                                                         )}
                                                     >
-                                                        Your Profile
+                                                        {item}
                                                     </a>
                                                 )}
                                             </Menu.Item>
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active
-                                                                ? "bg-gray-100"
-                                                                : "",
-                                                            "block px-4 py-2 text-sm text-gray-700"
-                                                        )}
-                                                    >
-                                                        Settings
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active
-                                                                ? "bg-gray-100"
-                                                                : "",
-                                                            "block px-4 py-2 text-sm text-gray-700"
-                                                        )}
-                                                    >
-                                                        Sign out
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
+                                            )}
                                         </Menu.Items>
                                     </Transition>
                                 </Menu>
