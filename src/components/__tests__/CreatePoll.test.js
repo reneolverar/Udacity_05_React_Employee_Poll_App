@@ -100,12 +100,15 @@ describe("CreatePoll", () => {
 
         screen.debug()
 
+        // This is wrong, it should not log the user out
+        const selectUserHeading = await screen.findByRole("heading", {
+            name: /select user/i,
+        })
+
+        // This should, the button in my application creates the new question and navigates to the dashboard
         const newQuestionsContainer = await screen.findByRole("heading", {
             name: /new questions/i,
         })
-        // const selectUserTag = await screen.findByRole("heading", {
-        //     name: /select user/i,
-        // })
 
         console.log(store.getState().questions.allIds.length)
     })
