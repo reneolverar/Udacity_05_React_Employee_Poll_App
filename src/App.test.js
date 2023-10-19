@@ -1,13 +1,19 @@
 import { screen, configure } from "@testing-library/react"
 import { renderWithProviders } from "./utils/test-utils"
 import App from "./App"
-import { handleInitialData } from "./actions/shared"
 import { getInitialData } from "./utils/api"
-import PollsDashboard from "./components/PollsDashboard"
-import Leaderboard from "./components/Leaderboard"
 
-let initialData
-beforeAll(async () => (initialData = await getInitialData()))
+export const logIn = async () => {
+    const initialData = await getInitialData()
+    const { user, store, container } = renderWithProviders(<App />, {
+        preloadedState: initialData,
+    })
+    const firstUser = await screen.findByRole("button", { name: /sarahedo/i })
+    user.click(firstUser)
+    const userLoggedIn = await screen.findByText(/@sarahedo/i)
+    expect(userLoggedIn).toBeInTheDocument()
+    return { user, store, container }
+}
 
 beforeEach(() => {
     configure({
@@ -17,24 +23,13 @@ beforeEach(() => {
 })
 
 describe("App", () => {
-    it("will match the snapshot", () => {
-        renderWithProviders(<App />)
+    it("will match the snapshot", async () => {
+        await logIn()
         expect(screen).toMatchSnapshot()
     })
 
-    it("will receive the authed user", async () => {
-        const { store } = renderWithProviders(<App />)
-        expect(screen.getByRole("link", { name: /login/i })).toBeInTheDocument()
-        await store.dispatch(handleInitialData())
-        expect(
-            screen.queryByRole("link", { name: /login/i })
-        ).not.toBeInTheDocument()
-    })
-
     it("will navigate to all links", async () => {
-        const { store, user } = renderWithProviders(<App />, {
-            preloadedState: initialData,
-        })
+        const { user } = await logIn()
 
         let homeContainer, leaderboardContainer, newPollContainer
         const homeRole = ["heading", { name: /new questions/i }]

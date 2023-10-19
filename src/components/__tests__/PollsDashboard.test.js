@@ -1,12 +1,5 @@
-import * as React from "react"
 import { screen, configure } from "@testing-library/react"
-import { renderWithProviders } from "../../utils/test-utils"
-import { getInitialData } from "../../utils/api"
-import PollsDashboard from "../PollsDashboard"
-import App from "../../App"
-
-let initialData
-beforeAll(async () => (initialData = await getInitialData()))
+import { logIn } from "../../App.test"
 
 beforeEach(() => {
     configure({
@@ -17,18 +10,15 @@ beforeEach(() => {
 
 describe("PollsDashboard", () => {
     it("will match the snapshot", async () => {
-        renderWithProviders(<PollsDashboard />, {
-            preloadedState: initialData,
-        })
+        await logIn()
         expect(screen).toMatchSnapshot()
     })
 
-    it("will have all expected fields", () => {
-        renderWithProviders(<PollsDashboard />, {
-            preloadedState: initialData,
-        })
+    it("will have all expected fields", async () => {
 
-        const newQuestionsContainer = screen.getByRole("heading", {
+        await logIn()
+
+        const newQuestionsContainer = await screen.findByRole("heading", {
             name: /new questions/i,
         })
         expect(newQuestionsContainer).toBeInTheDocument()
@@ -41,19 +31,17 @@ describe("PollsDashboard", () => {
     })
 
     it("will show poll details when button show is clicked", async () => {
-        const { user } = renderWithProviders(<App />, {
-            preloadedState: initialData,
-        })
-        const homeContainer = await screen.findByRole("heading", {
-            name: /new questions/i,
-        })
+        const {user, store} = await logIn()
 
         const showButtons = screen.getAllByRole("button", { name: /show/i })
         user.click(showButtons[0])
 
+        const authedUser = store.getState().authedUser
+
         const pollDetailsTitle = await screen.findByRole("heading", {
-            name: /Poll by tyler mcginnis/i,
+            name: /Poll by/i,
         })
 
+        expect(pollDetailsTitle).toBeInTheDocument()
     })
 })

@@ -190,7 +190,6 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
         if (!authedUser || !qid || !answer) {
             reject("Please provide authedUser, qid, and answer")
         }
-
         setTimeout(() => {
             users = {
                 ...users,

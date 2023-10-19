@@ -6242,7 +6242,7 @@
     "merge-stream" "^2.0.0"
     "supports-color" "^8.0.0"
 
-"jest@^27.0.0 || ^28.0.0", "jest@^27.4.3":
+"jest@^27.0.0 || ^28.0.0", "jest@^27.4.3", "jest@^27.5.1":
   "integrity" "sha512-Yn0mADZB89zTtjkPJEXwrac3LHudkQMR+Paqa8uxJHCBr9agxztUifWCyiYrjhMPBoUVBjyny0I7XH6ozDr7QQ=="
   "resolved" "https://registry.npmjs.org/jest/-/jest-27.5.1.tgz"
   "version" "27.5.1"
@@ -7769,7 +7769,16 @@
     "ansi-styles" "^5.0.0"
     "react-is" "^18.0.0"
 
-"pretty-format@^29.0.0", "pretty-format@^29.7.0":
+"pretty-format@^29.0.0":
+  "integrity" "sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ=="
+  "resolved" "https://registry.npmjs.org/pretty-format/-/pretty-format-29.7.0.tgz"
+  "version" "29.7.0"
+  dependencies:
+    "@jest/schemas" "^29.6.3"
+    "ansi-styles" "^5.0.0"
+    "react-is" "^18.0.0"
+
+"pretty-format@^29.7.0":
   "integrity" "sha512-Pdlw/oPxN+aXdmM9R00JVC9WVFoCLTKJvDVLgmJ+qAffBMxsV85l/Lu7sNx4zSzPyoL2euImuEwHhOXdEgNFZQ=="
   "resolved" "https://registry.npmjs.org/pretty-format/-/pretty-format-29.7.0.tgz"
   "version" "29.7.0"
