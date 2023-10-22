@@ -1,5 +1,10 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
+export const LocationDisplay = () => {
+  const location = useLocation()
+  return <div hidden={true} data-testid="location-display">{location.pathname}</div>
+}
+
 export function withRouter(Component) {
     const ComponentWithRouterProp = (props) => {
         let location = useLocation()

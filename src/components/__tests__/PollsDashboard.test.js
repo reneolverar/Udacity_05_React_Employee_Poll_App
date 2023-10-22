@@ -1,5 +1,5 @@
 import { screen, configure } from "@testing-library/react"
-import { logIn } from "../../App.test"
+import { logIn } from "../../utils/test-utils"
 
 beforeEach(() => {
     configure({

@@ -1,5 +1,5 @@
-import { screen, configure, logRoles } from "@testing-library/react"
-import { logIn } from "../../App.test"
+import { screen, configure, logRoles, waitFor } from "@testing-library/react"
+import { logIn } from "../../utils/test-utils"
 
 const goToCreatePoll = async (user) => {
     const newPollLink = await screen.findByRole("link", {
@@ -83,10 +83,12 @@ describe("CreatePoll", () => {
     })
 
     it("will be shown in the dashboard when submitted", async () => {
-        const { user, store, container } = await logIn()
+        const { user, store, history, container } = await logIn()
         console.log(store.getState().questions.allIds.length)
-        screen.debug()
         await goToCreatePoll(user)
+        await waitFor(() => {
+            expect(history.location.pathname).toBe("/add")
+        })
         // logRoles(container)
 
         const option1 = "Opt 1"
@@ -97,7 +99,11 @@ describe("CreatePoll", () => {
 
         await user.click(submitButton)
 
-        screen.debug()
+        await waitFor(() => {
+            expect(history.location.pathname).toBe("/")
+        })
+
+        // screen.debug()
 
         // This is wrong, it should not log the user out
         const selectUserHeading = await screen.findByRole("heading", {
@@ -109,6 +115,6 @@ describe("CreatePoll", () => {
             name: /new questions/i,
         })
 
-        console.log(store.getState().questions.allIds.length)
+        // console.log(store.getState().questions.allIds.length)
     })
 })

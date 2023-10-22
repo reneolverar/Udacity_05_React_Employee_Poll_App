@@ -163,21 +163,33 @@ function formatQuestion({ optionOneText, optionTwoText, author }) {
     }
 }
 
-export function _saveQuestion(question) {
+export function _saveQuestion({author, optionOneText, optionTwoText}) {
     return new Promise((resolve, reject) => {
         if (
-            !question.optionOneText ||
-            !question.optionTwoText ||
-            !question.author
+            !optionOneText ||
+            !optionTwoText ||
+            !author
         ) {
             reject("Please provide optionOneText, optionTwoText, and author")
         }
 
-        const formattedQuestion = formatQuestion(question)
+        const formattedQuestion = formatQuestion({author, optionOneText, optionTwoText})
+
+        // Add questions to user (Set so no duplicates), below it is converted to array
+        const userQuestions = new Set(...users[author].questions)
+        userQuestions.add(formattedQuestion.id)
+
         setTimeout(() => {
             questions = {
                 ...questions,
                 [formattedQuestion.id]: formattedQuestion,
+            }
+            users = {
+                ...users,
+                [author]: {
+                    ...users[author],
+                    questions: [...userQuestions],
+                }
             }
 
             resolve(formattedQuestion)
@@ -190,15 +202,28 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
         if (!authedUser || !qid || !answer) {
             reject("Please provide authedUser, qid, and answer")
         }
+
+        // Answers object with new answer
+        const newAnswers = {
+            ...users[authedUser].answers,
+            [qid]: answer,
+        }
+
+        // Add questions to user (Set so no duplicates), below it is converted to array
+        const userQuestions = new Set(...users[authedUser].questions)
+        userQuestions.add(qid)
+
+        // Add votes to question (Set so no duplicates), below it is converted to array
+        const questionVotes = new Set(...questions[qid][answer].votes)
+        questionVotes.add(authedUser)
+
         setTimeout(() => {
             users = {
                 ...users,
                 [authedUser]: {
                     ...users[authedUser],
-                    answers: {
-                        ...users[authedUser].answers,
-                        [qid]: answer,
-                    },
+                    answers: newAnswers,
+                    questions: [...userQuestions],
                 },
             }
 
@@ -208,9 +233,7 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
                     ...questions[qid],
                     [answer]: {
                         ...questions[qid][answer],
-                        votes: questions[qid][answer].votes.concat([
-                            authedUser,
-                        ]),
+                        votes: [...questionVotes],
                     },
                 },
             }

@@ -1,5 +1,5 @@
 import { connect } from "react-redux"
-import { withRouter } from "../utils/helpers"
+import { LocationDisplay, withRouter } from "../utils/helpers"
 import { handleVoteQuestion } from "../actions/questions"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
@@ -82,7 +82,7 @@ function PollDetails(props) {
                         <div>
                             <p className=" border-b-2">{voteMessage}</p>
                             <p>
-                                Option One had {optionOneVotes} votes (
+                                Option One has {optionOneVotes} votes (
                                 {percentage(optionOneVotes, optionTwoVotes)}%)
                             </p>
                         </div>
@@ -104,13 +104,14 @@ function PollDetails(props) {
                         <div>
                             <p className=" border-b-2">{voteMessage}</p>
                             <p>
-                                Option Two had {optionTwoVotes} votes (
+                                Option Two has {optionTwoVotes} votes (
                                 {percentage(optionTwoVotes, optionOneVotes)}%)
                             </p>
                         </div>
                     )}
                 </div>
             </div>
+            <LocationDisplay/>
         </div>
     )
 }

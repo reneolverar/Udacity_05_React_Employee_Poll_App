@@ -1,19 +1,5 @@
 import { screen, configure } from "@testing-library/react"
-import { renderWithProviders } from "./utils/test-utils"
-import App from "./App"
-import { getInitialData } from "./utils/api"
-
-export const logIn = async () => {
-    const initialData = await getInitialData()
-    const { user, store, container } = renderWithProviders(<App />, {
-        preloadedState: initialData,
-    })
-    const firstUser = await screen.findByRole("button", { name: /sarahedo/i })
-    user.click(firstUser)
-    const userLoggedIn = await screen.findByText(/@sarahedo/i)
-    expect(userLoggedIn).toBeInTheDocument()
-    return { user, store, container }
-}
+import { logIn } from "./utils/test-utils"
 
 beforeEach(() => {
     configure({
@@ -23,9 +9,24 @@ beforeEach(() => {
 })
 
 describe("App", () => {
-    it("will match the snapshot", async () => {
+    it("will match the login snapshot", async () => {
+        expect(screen).toMatchSnapshot()
+    })
+
+    it("will match the logged in snapshot", async () => {
         await logIn()
         expect(screen).toMatchSnapshot()
+    })
+
+    it("will log out", async () => {
+        const { user } = await logIn()
+        const userMenu = screen.getByRole("button", {
+            name: /open user menu/i,
+        })
+        user.click(userMenu)
+        const logOutButton = await screen.findByRole('menuitem', { name: /log out/i })
+        user.click(logOutButton)
+        const selectUser = await screen.findByRole('heading', { name: /select user/i })
     })
 
     it("will navigate to all links", async () => {
