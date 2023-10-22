@@ -39,6 +39,11 @@ function App(props) {
                             />
                             <Route
                                 exact
+                                path="/dashboard"
+                                element={<PollsDashboard />}
+                            />
+                            <Route
+                                exact
                                 path="/leaderboard"
                                 element={<Leaderboard />}
                             />

@@ -1,17 +1,16 @@
-import { Fragment } from "react"
+import { Fragment} from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
-import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useLocation } from "react-router-dom"
 import { connect } from "react-redux"
 import { withRouter } from "../utils/helpers"
 import logo from "../assets/employee-poll-logo.png"
 import { setAuthedUser } from "../actions/authedUser"
 
 const navTabs = [
-    { name: "Home", href: "/", current: true },
-    { name: "Leaderboard", href: "/leaderboard", current: false },
-    { name: "New", href: "/add", current: false },
+    { name: "Home", href: "/" },
+    { name: "Leaderboard", href: "/leaderboard" },
+    { name: "New", href: "/add" },
 ]
 
 const menuItems = ["Log out"]
@@ -22,34 +21,17 @@ function classNames(...classes) {
 
 function Nav(props) {
     const { dispatch } = props
-    const [navigation, setNavigation] = useState(navTabs)
-
-    const handleClick = (e) => {
-        setNavigation(
-            navigation.map((nav) =>
-                nav.name === e.target.name
-                    ? {
-                          ...nav,
-                          current: true,
-                      }
-                    : {
-                          ...nav,
-                          current: false,
-                      }
-            )
-        )
-    }
+    const location = useLocation()
 
     const handleMenuItemClick = (e) => {
         switch (e.target.id) {
             case "Log out":
                 dispatch(setAuthedUser(null))
-                break;
+                break
 
             default:
-                break;
+                break
         }
-
     }
     return (
         <Disclosure
@@ -90,20 +72,21 @@ function Nav(props) {
                                 </div>
                                 <div className="hidden sm:ml-6 sm:block">
                                     <div className="flex space-x-4">
-                                        {navigation.map((item) => (
+                                        {navTabs.map((item) => (
                                             <Link
                                                 key={item.name}
                                                 to={item.href}
                                                 name={item.name}
-                                                onClick={handleClick}
                                                 className={classNames(
-                                                    item.current
+                                                    item.href ===
+                                                        location.pathname
                                                         ? "bg-gray-900 text-white"
                                                         : "text-gray-300 hover:bg-gray-700 hover:text-white",
                                                     "rounded-md px-3 py-2 text-sm font-medium"
                                                 )}
                                                 aria-current={
-                                                    item.current
+                                                    item.href ===
+                                                    location.pathname
                                                         ? "page"
                                                         : undefined
                                                 }
@@ -141,23 +124,25 @@ function Nav(props) {
                                                 Open user menu
                                             </span>
                                             <div className=" text-center">
-                                                {props.authedUser ?
+                                                {props.authedUser ? (
                                                     <div>
-
-                                                    <img
-                                                    className="h-8 w-8 rounded-full m-auto"
-                                                    src={logo}
-                                                    alt="profile photo"
-                                                    />
-                                                <span className="text-white">
-                                                    @{props.authedUser}
-                                                </span>
-                                                    </div> :
-                                                    <Link to="/login" className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">
+                                                        <img
+                                                            className="h-8 w-8 rounded-full m-auto"
+                                                            src={logo}
+                                                            alt="profile photo"
+                                                        />
+                                                        <span className="text-white">
+                                                            @{props.authedUser}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <Link
+                                                        to="/login"
+                                                        className="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium"
+                                                    >
                                                         LogIn
-                                                        </Link>
-                                                }
-
+                                                    </Link>
+                                                )}
                                             </div>
                                         </Menu.Button>
                                     </div>
@@ -171,27 +156,29 @@ function Nav(props) {
                                         leaveTo="transform opacity-0 scale-95"
                                     >
                                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                            {menuItems.map((item) =>
+                                            {menuItems.map((item) => (
                                                 <Menu.Item
                                                     key={item}
                                                     id={item}
-                                                    onClick={handleMenuItemClick}
+                                                    onClick={
+                                                        handleMenuItemClick
+                                                    }
                                                 >
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active
-                                                                ? "bg-gray-100"
-                                                                : "",
-                                                            "block px-4 py-2 text-sm text-gray-700"
-                                                        )}
-                                                    >
-                                                        {item}
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                            )}
+                                                    {({ active }) => (
+                                                        <a
+                                                            href="#"
+                                                            className={classNames(
+                                                                active
+                                                                    ? "bg-gray-100"
+                                                                    : "",
+                                                                "block px-4 py-2 text-sm text-gray-700"
+                                                            )}
+                                                        >
+                                                            {item}
+                                                        </a>
+                                                    )}
+                                                </Menu.Item>
+                                            ))}
                                         </Menu.Items>
                                     </Transition>
                                 </Menu>
@@ -201,19 +188,21 @@ function Nav(props) {
 
                     <Disclosure.Panel className="sm:hidden">
                         <div className="space-y-1 px-2 pb-3 pt-2">
-                            {navigation.map((item) => (
+                            {navTabs.map((item) => (
                                 <Disclosure.Button
                                     key={item.name}
                                     as="a"
                                     href={item.href}
                                     className={classNames(
-                                        item.current
+                                        item.href === location.pathname
                                             ? "bg-gray-900 text-white"
                                             : "text-gray-300 hover:bg-gray-700 hover:text-white",
                                         "block rounded-md px-3 py-2 text-base font-medium"
                                     )}
                                     aria-current={
-                                        item.current ? "page" : undefined
+                                        item.href === location.pathname
+                                            ? "page"
+                                            : undefined
                                     }
                                 >
                                     {item.name}

@@ -71,6 +71,14 @@ export function getInitialData() {
     )
 }
 
+export function getUsers() {
+    return _getUsers().then(result => normalize(result))
+}
+
+export function getQuestions() {
+    return _getQuestions().then(result => normalize(result))
+}
+
 export function saveQuestion(info) {
     return _saveQuestion(info)
 }

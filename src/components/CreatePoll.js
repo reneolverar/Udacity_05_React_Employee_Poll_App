@@ -14,14 +14,9 @@ function CreatePoll(props) {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await dispatch(
-            handleAddQuestion(
-                optionOneText,
-                optionTwoText,
-            )
-        )
+        await dispatch(handleAddQuestion(optionOneText, optionTwoText))
         // navigate(`/poll/${newQuestion.id}`)
-        navigate(`/`)
+        navigate("/")
     }
 
     return (
@@ -49,7 +44,11 @@ function CreatePoll(props) {
                 className=" w-full m-2 border"
                 id="option-two-input"
             ></input>
-            {disableForm && <p className="opacity-50">*Please fill out all required fields</p>}
+            {disableForm && (
+                <p className="opacity-50">
+                    *Please fill out all required fields
+                </p>
+            )}
             <button
                 type="submit"
                 className="button bg-gray-300 disabled:opacity-25"
