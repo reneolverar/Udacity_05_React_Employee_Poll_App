@@ -1,12 +1,5 @@
-import * as React from "react"
 import { screen, configure } from "@testing-library/react"
-import { renderWithProviders } from "../../utils/test-utils"
-import { getInitialData } from "../../utils/api"
-
-import Leaderboard from "../Leaderboard"
-
-let initialData
-beforeAll(async () => (initialData = await getInitialData()))
+import { logIn } from "../../utils/test-utils"
 
 beforeEach(() => {
     configure({
@@ -16,19 +9,27 @@ beforeEach(() => {
 })
 
 describe("Leaderboard", () => {
-    it("will match the snapshot", () => {
-        renderWithProviders(<Leaderboard />, {
-            preloadedState: initialData,
+    it("will match the snapshot", async () => {
+        const { user } = await logIn()
+        const leaderboardLink = screen.getByRole("link", {
+            name: /leaderboard/i,
         })
+        user.click(leaderboardLink)
+        const leaderboardContainer = await screen.findByRole("heading", {
+            name: /leaderboard/i,
+        })
+        expect(leaderboardContainer).toBeInTheDocument()
         expect(screen).toMatchSnapshot()
     })
 
-    it("will have all expected fields", () => {
-        renderWithProviders(<Leaderboard />, {
-            preloadedState: initialData,
+    it("will have all expected fields", async () => {
+        const { user } = await logIn()
+        const leaderboardLink = screen.getByRole("link", {
+            name: /leaderboard/i,
         })
+        user.click(leaderboardLink)
 
-        const leaderBoardContainer = screen.getByRole("heading", {
+        const leaderBoardContainer = await screen.findByRole("heading", {
             name: /leaderboard/i,
         })
         expect(leaderBoardContainer).toBeInTheDocument()
@@ -40,5 +41,4 @@ describe("Leaderboard", () => {
             screen.getByRole("row", { name: /Mike Tsamis mtsamis 3 2/i })
         ).toBeInTheDocument()
     })
-
 })

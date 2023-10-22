@@ -11,10 +11,8 @@ import thunk from "redux-thunk"
 import logger from "../middleware/logger"
 import { getInitialData } from "./api"
 import App from "../App"
-import { createBrowserHistory } from 'history';
-import { unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
-
-
+import { createBrowserHistory } from "history"
+import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom"
 
 export function renderWithProviders(
     ui,
@@ -28,19 +26,24 @@ export function renderWithProviders(
             preloadedState,
         }),
         // route = "/",
-        history,
+        history = null,
         ...renderOptions
     } = {}
 ) {
-
     function Wrapper({ children }) {
-
-        return (
-            <Provider store={store}>
-                {/* <MemoryRouter>{children}</MemoryRouter> */}
-                <HistoryRouter history={history}>{children}</HistoryRouter>
-            </Provider>
-        )
+        if (history) {
+            return (
+                <Provider store={store}>
+                    <HistoryRouter history={history}>{children}</HistoryRouter>
+                </Provider>
+            )
+        } else {
+            return (
+                <Provider store={store}>
+                    <MemoryRouter>{children}</MemoryRouter>
+                </Provider>
+            )
+        }
     }
 
     // window.history.pushState({}, "Test page", route)
@@ -54,8 +57,7 @@ export function renderWithProviders(
     }
 }
 
-export const logIn = async () => {
-    const history = createBrowserHistory()
+export const logIn = async (history = null) => {
     const initialData = await getInitialData()
     const view = renderWithProviders(<App />, {
         preloadedState: initialData,

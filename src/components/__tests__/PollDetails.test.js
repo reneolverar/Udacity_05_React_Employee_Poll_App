@@ -1,7 +1,11 @@
-import { screen, configure, logRoles } from "@testing-library/react"
+import { screen, configure, logRoles, waitFor } from "@testing-library/react"
 import { logIn } from "../../utils/test-utils"
+import { createBrowserHistory } from "history"
 
 const goToDetails = async (user) => {
+    // await screen.findByRole("heading", {
+    //         name: /new questions/i,
+    //     })
     const showButtons = screen.getAllByRole("button", {
         name: /show/i,
     })
@@ -109,22 +113,32 @@ describe("PollDetails", () => {
     })
 
     it("will be marked done in dashboard after voting", async () => {
-        const { user, store, container } = await logIn()
+        let history = createBrowserHistory()
+        const { user, store, container } = await logIn(history)
         await goToDetails(user)
+
+        const { qId } = getVoteDetails(store)
+        await waitFor(() => {
+            expect(history.location.pathname).toBe("/poll/" + qId)
+        })
+
         await voteQuestion(store, user)
 
         const homeLink = screen.getByRole("link", {
             name: /home/i,
         })
-        await user.click(homeLink)
-        // screen.debug()
+        user.click(homeLink)
 
+        await waitFor(() => {
+            expect(history.location.pathname).toBe("/")
+        })
+
+        // screen.debug()
+        // logRoles(container)
+
+        // This test should pass
         // await screen.findByRole("heading", {
         //     name: /new questions/i,
         // })
-        // logRoles(container)
-
-        // const buttons = screen.getAllByRole("button", { name: /show/i })
-        // console.log(buttons[0])
     })
 })

@@ -27,6 +27,7 @@ describe("App", () => {
         const logOutButton = await screen.findByRole('menuitem', { name: /log out/i })
         user.click(logOutButton)
         const selectUser = await screen.findByRole('heading', { name: /select user/i })
+        expect(selectUser).toBeInTheDocument()
     })
 
     it("will navigate to all links", async () => {
