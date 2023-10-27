@@ -13,49 +13,46 @@ import NewPoll from "./components/CreatePoll"
 import PollDetails from "./components/PollDetails"
 import PageNotFound from "./components/PageNotFound"
 import LoadingBar from "react-redux-loading-bar"
+import RequireAuth from "./utils/RequireAuth"
 
 function App(props) {
     useEffect(() => {
         props.dispatch(handleInitialData())
     }, [])
 
+    // Protect route
+    const protectRote = (children) => <RequireAuth>{children}</RequireAuth>
+
     return (
         <div className="App">
             <Nav></Nav>
             <LoadingBar />
-            {props.loading === true ? null : (
+            {loading === true ? null : (
                 <Routes>
-                    {props.authedUser === null ? (
-                        <Route
-                            path="*"
-                            element={<LogIn />}
-                        />
-                    ) : (
-                        <>
                             <Route
-                                exact
                                 path="/"
-                                element={<PollsDashboard />}
+                        element={protectRote(<PollsDashboard />)}
                             />
                             <Route
-                                exact
-                                path="/dashboard"
-                                element={<PollsDashboard />}
+                        path="/Udacity_05_React_Employee_Poll_App"
+                        element={<Navigate to="/" />}
                             />
                             <Route
-                                exact
                                 path="/leaderboard"
-                                element={<Leaderboard />}
+                        element={protectRote(<Leaderboard />)}
                             />
                             <Route
-                                exact
                                 path="/add"
-                                element={<NewPoll />}
+                        element={protectRote(<NewPoll />)}
                             />
                             <Route
                                 exact
                                 path="/poll/:id"
-                                element={<PollDetails />}
+                        element={protectRote(<PollDetails />)}
+                    />
+                    <Route
+                        path="/login"
+                        element={<LogIn />}
                             />
                             <Route
                                 path="/pageNotFound"
@@ -69,8 +66,6 @@ function App(props) {
                                 path="/*"
                                 element={<Navigate to="/pageNotFound" />}
                             />
-                        </>
-                    )}
                 </Routes>
             )}
         </div>
