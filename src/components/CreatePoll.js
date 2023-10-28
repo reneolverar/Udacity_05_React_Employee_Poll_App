@@ -10,6 +10,13 @@ export default function CreatePoll() {
     const [optionTwoText, setOptionTwoText] = useState("")
 
     let disableForm = optionOneText === "" || optionTwoText === ""
+    const checkInputError = () =>
+        !disableForm && optionOneText === optionTwoText
+            ? "*Options text should be different"
+            : (!disableForm && optionOneText.length > 140) ||
+              optionTwoText.length > 140
+            ? "*Keep your texts short! Less than 140 characters"
+            : false
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -48,10 +55,11 @@ export default function CreatePoll() {
                     *Please fill out all required fields
                 </p>
             )}
+            {checkInputError() && <p className=" text-red-700">{checkInputError()}</p>}
             <button
                 type="submit"
                 className="button bg-gray-300 disabled:opacity-25"
-                disabled={disableForm}
+                disabled={disableForm || checkInputError()}
             >
                 Submit
             </button>
