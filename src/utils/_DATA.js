@@ -197,24 +197,24 @@ export function _saveQuestion({author, optionOneText, optionTwoText}) {
     })
 }
 
-export function _saveQuestionAnswer({ authedUser, qid, answer }) {
+export function _saveQuestionAnswer({ authedUser, qId, answer }) {
     return new Promise((resolve, reject) => {
-        if (!authedUser || !qid || !answer) {
-            reject("Please provide authedUser, qid, and answer")
+        if (!authedUser || !qId || !answer) {
+            reject("Please provide authedUser, qId, and answer")
         }
 
         // Answers object with new answer
         const newAnswers = {
             ...users[authedUser].answers,
-            [qid]: answer,
+            [qId]: answer,
         }
 
         // Add questions to user (Set so no duplicates), below it is converted to array
         const userQuestions = new Set(...users[authedUser].questions)
-        userQuestions.add(qid)
+        userQuestions.add(qId)
 
         // Add votes to question (Set so no duplicates), below it is converted to array
-        const questionVotes = new Set(...questions[qid][answer].votes)
+        const questionVotes = new Set(...questions[qId][answer].votes)
         questionVotes.add(authedUser)
 
         setTimeout(() => {
@@ -229,10 +229,10 @@ export function _saveQuestionAnswer({ authedUser, qid, answer }) {
 
             questions = {
                 ...questions,
-                [qid]: {
-                    ...questions[qid],
+                [qId]: {
+                    ...questions[qId],
                     [answer]: {
-                        ...questions[qid][answer],
+                        ...questions[qId][answer],
                         votes: [...questionVotes],
                     },
                 },

@@ -15,7 +15,7 @@ import { normalize } from "./helpers.js"
 //             name,
 //             avatarURL,
 //             answers: {
-//                 questionId: questionAnswer,
+//                 qId: answer,
 //             },
 //             questions: [id]
 //         },
