@@ -1,7 +1,7 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom"
 
 export const LocationDisplay = () => {
-  const location = useLocation()
+    const location = useLocation()
     return (
         <div
             hidden={true}
@@ -45,19 +45,20 @@ export function formatDate(timestamp) {
     return time.substr(0, 5) + time.slice(-2) + " | " + d.toLocaleDateString()
 }
 
-export function sortObjectArray(array, sortAttribute, options = {}) {
+export function sortByAttribute(array, attribute) {
     // Sort by a simple quantifiable attribute i.e 1, 2
-    if (!options.byLength) {
-        return Object.keys(array).sort(
-            (a, b) => array[b][sortAttribute] - array[a][sortAttribute]
-        )
-    }
-    // Sort by the length of an array or objectArray i.e [1, 2], {a: "a", b: "b"}
     return Object.keys(array).sort(
-        (a, b) =>
-            Object.keys(array[b][sortAttribute]).length -
-            Object.keys(array[a][sortAttribute]).length
+        (a, b) => array[b][attribute] - array[a][attribute]
     )
+}
+
+export function sortByAnsweredAndCreated(array) {
+    // Sort by the length of an array or objectArray i.e [1, 2], {a: "a", b: "b"}
+        return Object.keys(array).sort(
+            (a, b) =>
+                (Object.keys(array[b]["answers"]).length + array[b]["questions"].length) -
+                (Object.keys(array[a]["answers"]).length + array[a]["questions"].length)
+        )
 }
 
 export function formatTweet(tweet, author, authedUser, parentTweet) {
