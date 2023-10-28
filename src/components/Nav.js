@@ -2,10 +2,9 @@ import { Fragment} from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Link, useLocation } from "react-router-dom"
-import { connect } from "react-redux"
-import { withRouter } from "../utils/helpers"
 import logo from "../assets/employee-poll-logo.png"
 import { setAuthedUser } from "../actions/authedUser"
+import { useDispatch, useSelector } from "react-redux"
 
 const navTabs = [
     { name: "Home", href: "/" },
@@ -19,8 +18,9 @@ function classNames(...classes) {
     return classes.filter(Boolean).join(" ")
 }
 
-function Nav(props) {
-    const { dispatch } = props
+export default function Nav() {
+    const dispatch = useDispatch()
+    const authedUser = useSelector((state) => state.authedUser)
     const location = useLocation()
 
     const handleMenuItemClick = (e) => {
@@ -124,7 +124,7 @@ function Nav(props) {
                                                 Open user menu
                                             </span>
                                             <div className=" text-center">
-                                                {props.authedUser ? (
+                                                {authedUser ? (
                                                     <div>
                                                         <img
                                                             className="h-8 w-8 rounded-full m-auto"
@@ -132,7 +132,7 @@ function Nav(props) {
                                                             alt="profile photo"
                                                         />
                                                         <span className="text-white">
-                                                            @{props.authedUser}
+                                                            @{authedUser}
                                                         </span>
                                                     </div>
                                                 ) : (
@@ -215,9 +215,3 @@ function Nav(props) {
         </Disclosure>
     )
 }
-
-const mapStateToProps = ({ authedUser }) => ({
-    authedUser,
-})
-
-export default withRouter(connect(mapStateToProps)(Nav))

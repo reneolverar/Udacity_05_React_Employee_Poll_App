@@ -1,7 +1,6 @@
-import { connect } from "react-redux"
 import Question from "./Question"
 
-function QuestionsContainer(props) {
+export default function QuestionsContainer(props) {
     return (
         <div className="m-2 my-5">
             <h1 className="text-2xl text-center font-bold border border-black">
@@ -18,10 +17,3 @@ function QuestionsContainer(props) {
         </div>
     )
 }
-
-const mapStateToProps = ({ authedUser, questions }) => ({
-    authedUser,
-    questions,
-})
-
-export default connect(mapStateToProps)(QuestionsContainer)

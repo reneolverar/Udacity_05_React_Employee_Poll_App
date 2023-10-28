@@ -1,8 +1,10 @@
-import { connect } from "react-redux"
-import { sortObjectArray } from "../utils/helpers"
+import { useSelector } from "react-redux"
+import { sortByAnsweredAndCreated } from "../utils/helpers"
 import logo from "../assets/employee-poll-logo.png"
 
-function Leaderboard(props) {
+export default function Leaderboard() {
+    const users = useSelector((state) => state.users)
+    const sortedNumAnsweredIds = sortByAnsweredAndCreated(users.byId)
     return (
         <div>
             <h1 className=" text-2xl font-bold text-center">Leaderboard</h1>
@@ -15,7 +17,7 @@ function Leaderboard(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.sortedNumAnsweredIds.map((id) => (
+                    {sortedNumAnsweredIds.map((id) => (
                         <tr
                             key={id}
                             className="border border-neutral-500"
@@ -27,18 +29,13 @@ function Leaderboard(props) {
                                     width={50}
                                     height={50}
                                 ></img>
-                                <p className="text-xl">
-                                    {props.users.byId[id].name}
-                                </p>
-                                <span>{props.users.byId[id].id}</span>
+                                <p className="text-xl">{users.byId[id].name}</p>
+                                <span>{users.byId[id].id}</span>
                             </td>
                             <td>
-                                {
-                                    Object.keys(props.users.byId[id].answers)
-                                        .length
-                                }
+                                {Object.keys(users.byId[id].answers).length}
                             </td>
-                            <td>{props.users.byId[id].questions.length}</td>
+                            <td>{users.byId[id].questions.length}</td>
                         </tr>
                     ))}
                 </tbody>
@@ -46,11 +43,3 @@ function Leaderboard(props) {
         </div>
     )
 }
-
-const mapStateToProps = ({ authedUser, users }) => ({
-    authedUser,
-    users,
-    sortedNumAnsweredIds: sortObjectArray(users.byId, "answers", {byLength: true})
-})
-
-export default connect(mapStateToProps)(Leaderboard)

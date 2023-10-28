@@ -1,12 +1,21 @@
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import logo from "../assets/employee-poll-logo.png"
-import { setAuthedUser } from "../actions/authedUser"
+import { setAuthedUser } from "../store/authedUserSlice"
+import { useLocation, useNavigate } from "react-router-dom"
 
-function LogIn(props) {
-    const { dispatch } = props
+export default function LogIn() {
+    const users = useSelector((state) => state.users)
+    const dispatch = useDispatch()
+
+    // We are using protected routes with RequireAuth.js which sets the route the user
+    // wanted to access before sending him to login page
+    const navigate = useNavigate()
+    const { state } = useLocation()
+
     const handleClick = async (e) => {
         e.preventDefault()
         await dispatch(setAuthedUser(e.target.id))
+        navigate(state?.path || "/")
     }
     return (
         <div className="text-center">
@@ -20,7 +29,7 @@ function LogIn(props) {
             />
             <h2 className="text-3xl">Log In</h2>
             <h3 className="text-xl">Select user</h3>
-            {props.users.allIds?.map((id) => (
+            {users.allIds?.map((id) => (
                 <button
                     key={id}
                     id={id}
@@ -41,10 +50,3 @@ function LogIn(props) {
         </div>
     )
 }
-
-const mapStateToProps = ({ authedUser, users }) => ({
-    authedUser,
-    users,
-})
-
-export default connect(mapStateToProps)(LogIn)

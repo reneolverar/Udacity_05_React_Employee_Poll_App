@@ -1,12 +1,11 @@
-import { connect } from "react-redux"
 import { useState } from "react"
 import { handleAddQuestion } from "../actions/questions"
 import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
 
-function CreatePoll(props) {
+export default function CreatePoll() {
     const navigate = useNavigate()
-
-    const { dispatch } = props
+    const dispatch = useDispatch()
     const [optionOneText, setOptionOneText] = useState("")
     const [optionTwoText, setOptionTwoText] = useState("")
 
@@ -59,11 +58,3 @@ function CreatePoll(props) {
         </form>
     )
 }
-
-const mapStateToProps = ({ authedUser }) => {
-    return {
-        authedUser,
-    }
-}
-
-export default connect(mapStateToProps)(CreatePoll)

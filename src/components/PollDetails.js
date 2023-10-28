@@ -1,13 +1,17 @@
-import { connect } from "react-redux"
-import { LocationDisplay, withRouter } from "../utils/helpers"
 import { handleVoteQuestion } from "../actions/questions"
-import { useNavigate } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import logo from "../assets/employee-poll-logo.png"
 
-function PollDetails(props) {
+export default function PollDetails(props) {
     const navigate = useNavigate()
-    const { dispatch, id, authedUser, users, questions } = props
+    const dispatch = useDispatch()
+    const authedUser = useSelector((state) => state.authedUser)
+    const users = useSelector((state) => state.users)
+    const questions = useSelector((state) => state.questions)
+    let params = useParams()
+    const { id } = params
 
     useEffect(() => {
         if (!questions.byId[id]) {
@@ -42,7 +46,7 @@ function PollDetails(props) {
         dispatch(
             handleVoteQuestion({
                 authedUser,
-                qid: id,
+                qId: id,
                 answer: e.target.name,
             })
         )
@@ -111,19 +115,6 @@ function PollDetails(props) {
                     )}
                 </div>
             </div>
-            <LocationDisplay/>
         </div>
     )
 }
-
-const mapStateToProps = ({ authedUser, questions, users }, props) => {
-    const { id } = props.router.params
-    return {
-        id,
-        authedUser,
-        users,
-        questions,
-    }
-}
-
-export default withRouter(connect(mapStateToProps)(PollDetails))

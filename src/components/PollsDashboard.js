@@ -1,18 +1,23 @@
-import { connect } from "react-redux"
+import { useSelector } from "react-redux"
 import QuestionsContainer from "./QuestionsContainer.js"
-import { sortObjectArray } from "../utils/helpers.js"
+import { sortByAttribute } from "../utils/helpers.js"
+import { useState } from "react"
 
-function PollsDashboard(props) {
-    // List questionIds of already voted questions by the authedUser
-    const answeredQuestionIds = props.sortedQuestionIds.filter(
+export default function PollsDashboard() {
+    const authedUser = useSelector((state) => state.authedUser)
+    const questions = useSelector((state) => state.questions)
+    const sortedQuestionIds = sortByAttribute(questions.byId, "timestamp")
+    const [activeContainer, setactiveContainer] = useState("New Questions")
+    // List qIds of already voted questions by the authedUser
+    const answeredQuestionIds = sortedQuestionIds.filter(
         (id) =>
-            props.questions.byId[id].optionOne.votes.includes(
-                props.authedUser
+            questions.byId[id].optionOne.votes.includes(
+                authedUser
             ) ||
-            props.questions.byId[id].optionTwo.votes.includes(props.authedUser)
+            questions.byId[id].optionTwo.votes.includes(authedUser)
     )
-    // List questionIds of not voted questions by the authedUser
-    const newQuestionIds = props.sortedQuestionIds.filter(
+    // List qIds of not voted questions by the authedUser
+    const newQuestionIds = sortedQuestionIds.filter(
         (id) => !answeredQuestionIds.includes(id)
     )
 
@@ -20,11 +25,11 @@ function PollsDashboard(props) {
     const questionContainers = [
         {
             title: "New Questions",
-            questionIds: newQuestionIds,
+            qIds: newQuestionIds,
         },
         {
             title: "Done",
-            questionIds: answeredQuestionIds,
+            qIds: answeredQuestionIds,
         },
     ]
 
@@ -32,22 +37,16 @@ function PollsDashboard(props) {
         <div>
             {questionContainers.map(
                 (container) =>
-                    container.questionIds.length > 0 && (
+                    container.qIds.length > 0 && (
                         <QuestionsContainer
                             key={container.title}
                             title={container.title}
-                            questionIds={container.questionIds}
+                            qIds={container.qIds}
+                            active={container.title === activeContainer}
+                            onToggle={(containerTitle) => setactiveContainer(containerTitle)}
                         ></QuestionsContainer>
                     )
             )}
         </div>
     )
 }
-
-const mapStateToProps = ({ authedUser, questions }) => ({
-    authedUser,
-    questions,
-    sortedQuestionIds: sortObjectArray(questions.byId, "timestamp"),
-})
-
-export default connect(mapStateToProps)(PollsDashboard)

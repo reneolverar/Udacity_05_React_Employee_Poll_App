@@ -1,10 +1,8 @@
 import "./App.css"
-
 import { Routes, Route, Navigate } from "react-router-dom"
 import { useEffect } from "react"
-import { connect } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { handleInitialData } from "./actions/shared"
-
 import Nav from "./components/Nav"
 import PollsDashboard from "./components/PollsDashboard"
 import Leaderboard from "./components/Leaderboard"
@@ -15,7 +13,10 @@ import PageNotFound from "./components/PageNotFound"
 import LoadingBar from "react-redux-loading-bar"
 import RequireAuth from "./utils/RequireAuth"
 
-function App(props) {
+export default function App() {
+    const users = useSelector((state) => state.users)
+    let loading = users === null
+    const dispatch = useDispatch()
     useEffect(() => {
         props.dispatch(handleInitialData())
     }, [])
@@ -71,10 +72,3 @@ function App(props) {
         </div>
     )
 }
-
-const mapStateToProps = ({ users, authedUser }) => ({
-    loading: users === null,
-    authedUser,
-})
-
-export default connect(mapStateToProps)(App)
