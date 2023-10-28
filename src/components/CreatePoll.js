@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { handleAddQuestion } from "../actions/questions"
+import { addQuestion } from "../store/questionSlice"
 import { useNavigate } from "react-router-dom"
 import { useDispatch } from "react-redux"
 
@@ -13,7 +13,7 @@ export default function CreatePoll() {
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        await dispatch(handleAddQuestion(optionOneText, optionTwoText))
+        await dispatch(addQuestion({ optionOneText, optionTwoText }))
         // navigate(`/poll/${newQuestion.id}`)
         navigate("/")
     }

@@ -18,7 +18,7 @@ export default function App() {
     let loading = users === null
     const dispatch = useDispatch()
     useEffect(() => {
-        props.dispatch(handleInitialData())
+        dispatch(handleInitialData())
     }, [])
 
     // Protect route
@@ -30,43 +30,43 @@ export default function App() {
             <LoadingBar />
             {loading === true ? null : (
                 <Routes>
-                            <Route
-                                path="/"
+                    <Route
+                        path="/"
                         element={protectRote(<PollsDashboard />)}
-                            />
-                            <Route
+                    />
+                    <Route
                         path="/Udacity_05_React_Employee_Poll_App"
                         element={<Navigate to="/" />}
-                            />
-                            <Route
-                                path="/leaderboard"
+                    />
+                    <Route
+                        path="/leaderboard"
                         element={protectRote(<Leaderboard />)}
-                            />
-                            <Route
-                                path="/add"
+                    />
+                    <Route
+                        path="/add"
                         element={protectRote(<NewPoll />)}
-                            />
-                            <Route
-                                exact
-                                path="/poll/:id"
+                    />
+                    <Route
+                        exact
+                        path="/poll/:id"
                         element={protectRote(<PollDetails />)}
                     />
                     <Route
                         path="/login"
                         element={<LogIn />}
-                            />
-                            <Route
-                                path="/pageNotFound"
-                                element={<PageNotFound />}
-                            />
-                            <Route
-                                path="/pageNotFound/:error"
-                                element={<PageNotFound />}
-                            />
-                            <Route
-                                path="/*"
-                                element={<Navigate to="/pageNotFound" />}
-                            />
+                    />
+                    <Route
+                        path="/pageNotFound"
+                        element={<PageNotFound />}
+                    />
+                    <Route
+                        path="/pageNotFound/:error"
+                        element={<PageNotFound />}
+                    />
+                    <Route
+                        path="/*"
+                        element={<Navigate to="/pageNotFound" />}
+                    />
                 </Routes>
             )}
         </div>

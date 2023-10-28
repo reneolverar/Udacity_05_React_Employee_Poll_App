@@ -4,13 +4,14 @@ import { BrowserRouter } from "react-router-dom"
 import "./index.css"
 import App from "./App"
 import reportWebVitals from "./reportWebVitals"
-
 import { createStore } from "redux"
 import { Provider } from "react-redux"
 import reducer from "./reducers"
 import middleware from "./middleware"
+import { store } from "./store/store"
 
-const store = createStore(reducer, middleware)
+
+// const store = createStore(reducer, middleware)
 
 const root = ReactDOM.createRoot(document.getElementById("root"))
 root.render(

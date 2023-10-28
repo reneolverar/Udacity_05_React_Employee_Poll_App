@@ -1,5 +1,5 @@
-import { handleVoteQuestion } from "../actions/questions"
 import { useDispatch, useSelector } from "react-redux"
+import { voteQuestion } from "../store/questionSlice"
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import logo from "../assets/employee-poll-logo.png"
@@ -44,7 +44,7 @@ export default function PollDetails(props) {
     const handleClick = (e) => {
         e.preventDefault()
         dispatch(
-            handleVoteQuestion({
+            voteQuestion({
                 authedUser,
                 qId: id,
                 answer: e.target.name,

@@ -3,7 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../assets/employee-poll-logo.png"
-import { setAuthedUser } from "../actions/authedUser"
+import { setAuthedUser } from "../store/authedUserSlice"
 import { useDispatch, useSelector } from "react-redux"
 
 const navTabs = [
