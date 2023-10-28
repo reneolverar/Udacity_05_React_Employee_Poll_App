@@ -7,7 +7,7 @@ export const questionSlice = createSlice({
         receiveQuestions: (state, action) => {
             return action.payload
         },
-        addQuestion: async (state, action) => {
+        addQuestion: (state, action) => {
             const question = action.payload
             state.byId[question.id] = question
             state.allIds.push(question.id)

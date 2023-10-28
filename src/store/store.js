@@ -3,8 +3,6 @@ import authedUserReducer from "./authedUserSlice"
 import questionsReducer from "./questionSlice"
 import usersReducer from "./usersSlice"
 import { loadingBarReducer } from "react-redux-loading-bar"
-import middleware from "../middleware"
-import thunk from "redux-thunk"
 import logger from "../middleware/logger"
 
 export const store = configureStore({
@@ -14,8 +12,7 @@ export const store = configureStore({
     users: usersReducer,
     loadingBar: loadingBarReducer,
 },
-    // middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
-    middleware: [thunk, logger],
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(logger),
 })
 
 // // Infer the `RootState` and `AppDispatch` types from the store itself

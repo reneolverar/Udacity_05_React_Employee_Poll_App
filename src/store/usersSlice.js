@@ -9,12 +9,12 @@ export const userSlice = createSlice({
         },
         addQuestionToUser: (state, action) => {
             const { authedUser, qId } = action.payload
-            return state.value.byId[authedUser].questions.push(qId)
+            state.byId[authedUser].questions.push(qId)
         },
         addAnswerToUser: (state, action) => {
             const { authedUser, qId, answer } = action.payload
-            return state.value.byId[authedUser].answers = {
-                ...state.value.byId[authedUser].answers,
+            state.byId[authedUser].answers = {
+                ...state.byId[authedUser].answers,
                 [qId]: answer,
             }
         },
