@@ -5,20 +5,19 @@ import { useState } from "react"
 
 export default function PollsDashboard() {
     const authedUser = useSelector((state) => state.authedUser)
+    const user = useSelector((state) => state.users.byId[authedUser])
     const questions = useSelector((state) => state.questions)
     const sortedQuestionIds = sortByAttribute(questions.byId, "timestamp")
-    const [activeContainer, setactiveContainer] = useState("New Questions")
     // List qIds of already voted questions by the authedUser
-    const answeredQuestionIds = sortedQuestionIds.filter(
-        (id) =>
-            questions.byId[id].optionOne.votes.includes(
-                authedUser
-            ) ||
-            questions.byId[id].optionTwo.votes.includes(authedUser)
+    const answeredQuestionIds = sortedQuestionIds.filter((id) =>
+        Object.keys(user.answers).includes(id)
     )
     // List qIds of not voted questions by the authedUser
     const newQuestionIds = sortedQuestionIds.filter(
         (id) => !answeredQuestionIds.includes(id)
+    )
+    const [activeContainer, setactiveContainer] = useState(
+        newQuestionIds.length > 0 ? "New Questions" : "Done"
     )
 
     // Create the two categories of containers, answered and open questions/polls
@@ -43,7 +42,9 @@ export default function PollsDashboard() {
                             title={container.title}
                             qIds={container.qIds}
                             active={container.title === activeContainer}
-                            onToggle={(containerTitle) => setactiveContainer(containerTitle)}
+                            onToggle={(containerTitle) =>
+                                setactiveContainer(containerTitle)
+                            }
                         ></QuestionsContainer>
                     )
             )}
