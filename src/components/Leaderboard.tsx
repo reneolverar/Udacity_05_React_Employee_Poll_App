@@ -1,9 +1,9 @@
-import { useSelector } from "react-redux"
+import { useAppSelector } from "../store/hooks"
 import { sortByAnsweredAndCreated } from "../utils/helpers"
 import logo from "../assets/employee-poll-logo.png"
 
 export default function Leaderboard() {
-    const users = useSelector((state) => state.users)
+    const users = useAppSelector((state) => state.users)
     const sortedNumAnsweredIds = sortByAnsweredAndCreated(users.byId)
     return (
         <div>

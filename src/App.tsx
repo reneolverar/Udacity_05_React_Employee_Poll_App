@@ -1,7 +1,7 @@
 import "./App.css"
 import { Routes, Route, Navigate } from "react-router-dom"
-import { useEffect } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React, { ReactNode, useEffect } from "react"
+import { useAppDispatch, useAppSelector } from "./store/hooks"
 import { handleInitialData } from "./store/sharedActions"
 import Nav from "./components/Nav"
 import PollsDashboard from "./components/PollsDashboard"
@@ -14,15 +14,15 @@ import LoadingBar from "react-redux-loading-bar"
 import RequireAuth from "./utils/RequireAuth"
 
 export default function App() {
-    const users = useSelector((state) => state.users)
-    let loading = users === null
-    const dispatch = useDispatch()
+    const users = useAppSelector((state) => state.users)
+    let loading: boolean = Object.entries(users).length === 0;
+    const dispatch = useAppDispatch()
     useEffect(() => {
         dispatch(handleInitialData())
     }, [])
 
     // Protect route
-    const protectRote = (children) => <RequireAuth>{children}</RequireAuth>
+    const protectRote = (children: ReactNode) => <RequireAuth>{children}</RequireAuth>
 
     return (
         <div className="App">
@@ -47,7 +47,6 @@ export default function App() {
                         element={protectRote(<NewPoll />)}
                     />
                     <Route
-                        exact
                         path="/poll/:id"
                         element={protectRote(<PollDetails />)}
                     />

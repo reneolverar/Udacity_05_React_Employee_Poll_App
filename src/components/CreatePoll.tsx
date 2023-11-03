@@ -1,26 +1,26 @@
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { handleAddQuestion } from "../store/sharedActions"
 import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
+import { useAppDispatch } from "../store/hooks"
 
 export default function CreatePoll() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const [optionOneText, setOptionOneText] = useState("")
-    const [optionTwoText, setOptionTwoText] = useState("")
+    const dispatch = useAppDispatch()
+    const [optionOneText, setOptionOneText] = useState<string>("")
+    const [optionTwoText, setOptionTwoText] = useState<string>("")
 
-    let disableForm = optionOneText === "" || optionTwoText === ""
     const checkInputError = () =>
-        !disableForm && optionOneText === optionTwoText
+        optionOneText === "" || optionTwoText === ""
+            ? "*Please fill out all required fields"
+            : optionOneText === optionTwoText
             ? "*Options text should be different"
-            : (!disableForm && optionOneText.length > 140) ||
-              optionTwoText.length > 140
+            : optionOneText.length > 140 || optionTwoText.length > 140
             ? "*Keep your texts short! Less than 140 characters"
-            : false
+            : ""
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        await dispatch(handleAddQuestion({ optionOneText, optionTwoText }))
+        await dispatch(handleAddQuestion(optionOneText, optionTwoText))
         // navigate(`/poll/${newQuestion.id}`)
         navigate("/")
     }
@@ -50,16 +50,13 @@ export default function CreatePoll() {
                 className=" w-full m-2 border"
                 id="option-two-input"
             ></input>
-            {disableForm && (
-                <p className="opacity-50">
-                    *Please fill out all required fields
-                </p>
+            {checkInputError() && (
+                <p className="opacity-50">{checkInputError()}</p>
             )}
-            {checkInputError() && <p className=" text-red-700">{checkInputError()}</p>}
             <button
                 type="submit"
                 className="button bg-gray-300 disabled:opacity-25"
-                disabled={disableForm || checkInputError()}
+                disabled={checkInputError().length > 0}
             >
                 Submit
             </button>

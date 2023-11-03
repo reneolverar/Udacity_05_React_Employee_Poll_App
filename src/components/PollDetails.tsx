@@ -1,17 +1,19 @@
-import { useDispatch, useSelector } from "react-redux"
 import { handleVoteQuestion } from "../store/sharedActions"
 import { useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import logo from "../assets/employee-poll-logo.png"
+import { useAppDispatch, useAppSelector } from "../store/hooks"
 
-export default function PollDetails(props) {
+export default function PollDetails() {
     const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const authedUser = useSelector((state) => state.authedUser)
-    const users = useSelector((state) => state.users)
-    const questions = useSelector((state) => state.questions)
+    const dispatch = useAppDispatch()
+    const authedUser = useAppSelector((state) => state.authedUser.value) as string
+    console.log(authedUser);
+
+    const users = useAppSelector((state) => state.users)
+    const questions = useAppSelector((state) => state.questions)
     let params = useParams()
-    const { id } = params
+    const id = params.id as string
 
     useEffect(() => {
         if (!questions.byId[id]) {
@@ -25,14 +27,14 @@ export default function PollDetails(props) {
     )
 
     const question = questions.byId[id]
-    const author = users.byId[question?.author]
+    const author = users.byId[question?.["author"]]
 
     const votedOptionOne = question?.optionOne.votes.includes(authedUser)
     const votedOptionTwo = question?.optionTwo.votes.includes(authedUser)
     const optionOneVotes = question?.optionOne.votes.length
     const optionTwoVotes = question?.optionTwo.votes.length
 
-    const percentage = (nom, den) => {
+    const percentage = (nom: number, den: number) => {
         if (nom === 0) {
             return 0
         }
@@ -41,11 +43,10 @@ export default function PollDetails(props) {
 
     const answeringDisabled = votedOptionOne || votedOptionTwo
 
-    const handleClick = (e) => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement> & {target: HTMLButtonElement}) => {
         e.preventDefault()
         dispatch(
             handleVoteQuestion({
-                authedUser,
                 qId: id,
                 answer: e.target.name,
             })

@@ -1,10 +1,10 @@
-import { Fragment} from "react"
+import { Fragment } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import { Link, useLocation } from "react-router-dom"
 import logo from "../assets/employee-poll-logo.png"
 import { setAuthedUser } from "../store/authedUserSlice"
-import { useDispatch, useSelector } from "react-redux"
+import { useAppDispatch, useAppSelector } from "../store/hooks"
 
 const navTabs = [
     { name: "Home", href: "/" },
@@ -14,21 +14,22 @@ const navTabs = [
 
 const menuItems = ["Log out"]
 
-function classNames(...classes) {
+function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ")
 }
 
 export default function Nav() {
-    const dispatch = useDispatch()
-    const authedUser = useSelector((state) => state.authedUser)
+    const dispatch = useAppDispatch()
+    const authedUser = useAppSelector((state) => state.authedUser.value)
+    console.log(authedUser);
+
     const location = useLocation()
 
-    const handleMenuItemClick = (e) => {
-        switch (e.target.id) {
+    const handleMenuItemClick = (id: string) => {
+        switch (id) {
             case "Log out":
                 dispatch(setAuthedUser(null))
                 break
-
             default:
                 break
         }
@@ -76,7 +77,7 @@ export default function Nav() {
                                             <Link
                                                 key={item.name}
                                                 to={item.href}
-                                                name={item.name}
+                                                // name={item.name}
                                                 className={classNames(
                                                     item.href ===
                                                         location.pathname
@@ -157,15 +158,14 @@ export default function Nav() {
                                     >
                                         <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                                             {menuItems.map((item) => (
-                                                <Menu.Item
-                                                    key={item}
-                                                    id={item}
-                                                    onClick={
-                                                        handleMenuItemClick
-                                                    }
-                                                >
+                                                <Menu.Item key={item}>
                                                     {({ active }) => (
                                                         <a
+                                                            onClick={() =>
+                                                                handleMenuItemClick(
+                                                                    item
+                                                                )
+                                                            }
                                                             href="#"
                                                             className={classNames(
                                                                 active
