@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/Udacity_05_React_Employee_Poll_App/static/css/main.45676cd1.css",
-    "main.js": "/Udacity_05_React_Employee_Poll_App/static/js/main.c0edc883.js",
+    "main.css": "/Udacity_05_React_Employee_Poll_App/static/css/main.961a76a3.css",
+    "main.js": "/Udacity_05_React_Employee_Poll_App/static/js/main.f2008e10.js",
     "static/js/787.7f435901.chunk.js": "/Udacity_05_React_Employee_Poll_App/static/js/787.7f435901.chunk.js",
+    "static/media/employee-poll-logo.png": "/Udacity_05_React_Employee_Poll_App/static/media/employee-poll-logo.c172e835be6239795ee6.png",
     "index.html": "/Udacity_05_React_Employee_Poll_App/index.html",
-    "main.45676cd1.css.map": "/Udacity_05_React_Employee_Poll_App/static/css/main.45676cd1.css.map",
-    "main.c0edc883.js.map": "/Udacity_05_React_Employee_Poll_App/static/js/main.c0edc883.js.map",
+    "main.961a76a3.css.map": "/Udacity_05_React_Employee_Poll_App/static/css/main.961a76a3.css.map",
+    "main.f2008e10.js.map": "/Udacity_05_React_Employee_Poll_App/static/js/main.f2008e10.js.map",
     "787.7f435901.chunk.js.map": "/Udacity_05_React_Employee_Poll_App/static/js/787.7f435901.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.45676cd1.css",
-    "static/js/main.c0edc883.js"
+    "static/css/main.961a76a3.css",
+    "static/js/main.f2008e10.js"
   ]
 }
