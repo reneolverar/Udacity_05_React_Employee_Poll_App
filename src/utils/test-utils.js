@@ -3,16 +3,13 @@ import { render, screen } from "@testing-library/react"
 import { configureStore } from "@reduxjs/toolkit"
 import { Provider } from "react-redux"
 import { MemoryRouter } from "react-router-dom"
-import userEvent from "@testing-library/user-event"
-// As a basic setup, import your same slice reducers
-// import userReducer from '../features/users/userSlice'
-import reducer from "../reducers"
-import thunk from "redux-thunk"
 import logger from "../middleware/logger"
 import { getInitialData } from "./api"
 import App from "../App"
-import { createBrowserHistory } from "history"
 import { unstable_HistoryRouter as HistoryRouter } from "react-router-dom"
+import { normalize } from "./helpers"
+import { rootReducer } from "../store/store"
+const _ = require("lodash")
 
 export function renderWithProviders(
     ui,
@@ -21,51 +18,181 @@ export function renderWithProviders(
         // Automatically create a store instance if no store was passed in
         // store = configureStore({ reducer: { user: userReducer }, preloadedState }),
         store = configureStore({
-            reducer,
-            middleware: [thunk, logger],
+            reducer: rootReducer,
+            middleware: (getDefaultMiddleware) =>
+                getDefaultMiddleware().concat(logger),
             preloadedState,
         }),
-        // route = "/",
-        history = null,
         ...renderOptions
     } = {}
 ) {
     function Wrapper({ children }) {
-        if (history) {
-            return (
-                <Provider store={store}>
-                    <HistoryRouter history={history}>{children}</HistoryRouter>
-                </Provider>
-            )
-        } else {
-            return (
-                <Provider store={store}>
-                    <MemoryRouter>{children}</MemoryRouter>
-                </Provider>
-            )
-        }
+        return <Provider store={store}>{children}</Provider>
     }
-
-    // window.history.pushState({}, "Test page", route)
-
-    // Return an object with the store and all of RTL's query functions
     return {
-        history,
         store,
-        user: userEvent.setup(),
         ...render(ui, { wrapper: Wrapper, ...renderOptions }),
     }
+    // window.history.pushState({}, "Test page", route)
 }
 
-export const logIn = async (history = null) => {
+export const logIn = async ({ userId = "sarahedo", history = null } = {}) => {
     const initialData = await getInitialData()
+    const clonedInitialData = _.cloneDeep(initialData)
     const view = renderWithProviders(<App />, {
-        preloadedState: initialData,
-        history: history,
+        preloadedState: clonedInitialData,
+        history,
     })
-    const firstUser = await screen.findByRole("button", { name: /sarahedo/i })
-    view.user.click(firstUser)
-    const userLoggedIn = await screen.findByText(/@sarahedo/i)
+    const userLogInButton = await screen.findByRole("button", { name: userId })
+    view.user.click(userLogInButton)
+    const userLoggedIn = await screen.findByText("@" + userId)
     expect(userLoggedIn).toBeInTheDocument()
     return view
+}
+
+export const createStore = (preloadedState = null) => {
+    const clonedData = _.cloneDeep(initialData)
+    if (!preloadedState) {
+        preloadedState = clonedData
+    }
+    const store = configureStore({
+        reducer: rootReducer,
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(logger),
+        preloadedState,
+    })
+    return store
+}
+
+export const initialData = {
+    authedUser: { value: "sarahedo" },
+    users: normalize({
+        sarahedo: {
+            id: "sarahedo",
+            password: "password123",
+            name: "Sarah Edo",
+            avatarURL: null,
+            answers: {
+                "8xf0y6ziyjabvozdd253nd": "optionOne",
+                "6ni6ok3ym7mf1p33lnez": "optionOne",
+                am8ehyc8byjqgar0jgpub9: "optionTwo",
+                loxhs1bqm25b708cmbf3g: "optionTwo",
+            },
+            questions: ["8xf0y6ziyjabvozdd253nd", "am8ehyc8byjqgar0jgpub9"],
+        },
+        tylermcginnis: {
+            id: "tylermcginnis",
+            password: "abc321",
+            name: "Tyler McGinnis",
+            avatarURL: null,
+            answers: {
+                vthrdm985a262al8qx3do: "optionOne",
+                xj352vofupe1dqz9emx13r: "optionTwo",
+            },
+            questions: ["loxhs1bqm25b708cmbf3g", "vthrdm985a262al8qx3do"],
+        },
+        mtsamis: {
+            id: "mtsamis",
+            password: "xyz123",
+            name: "Mike Tsamis",
+            avatarURL: null,
+            answers: {
+                xj352vofupe1dqz9emx13r: "optionOne",
+                vthrdm985a262al8qx3do: "optionTwo",
+                "6ni6ok3ym7mf1p33lnez": "optionOne",
+            },
+            questions: ["6ni6ok3ym7mf1p33lnez", "xj352vofupe1dqz9emx13r"],
+        },
+        zoshikanlu: {
+            id: "zoshikanlu",
+            password: "pass246",
+            name: "Zenobia Oshikanlu",
+            avatarURL: null,
+            answers: {
+                xj352vofupe1dqz9emx13r: "optionOne",
+            },
+            questions: [],
+        },
+    }),
+
+    questions: normalize({
+        "8xf0y6ziyjabvozdd253nd": {
+            id: "8xf0y6ziyjabvozdd253nd",
+            author: "sarahedo",
+            timestamp: 1467166872634,
+            optionOne: {
+                votes: ["sarahedo"],
+                text: "Build our new application with Javascript",
+            },
+            optionTwo: {
+                votes: [],
+                text: "Build our new application with Typescript",
+            },
+        },
+        "6ni6ok3ym7mf1p33lnez": {
+            id: "6ni6ok3ym7mf1p33lnez",
+            author: "mtsamis",
+            timestamp: 1468479767190,
+            optionOne: {
+                votes: [],
+                text: "hire more frontend developers",
+            },
+            optionTwo: {
+                votes: ["mtsamis", "sarahedo"],
+                text: "hire more backend developers",
+            },
+        },
+        am8ehyc8byjqgar0jgpub9: {
+            id: "am8ehyc8byjqgar0jgpub9",
+            author: "sarahedo",
+            timestamp: 1488579767190,
+            optionOne: {
+                votes: [],
+                text: "conduct a release retrospective 1 week after a release",
+            },
+            optionTwo: {
+                votes: ["sarahedo"],
+                text: "conduct release retrospectives quarterly",
+            },
+        },
+        loxhs1bqm25b708cmbf3g: {
+            id: "loxhs1bqm25b708cmbf3g",
+            author: "tylermcginnis",
+            timestamp: 1482579767190,
+            optionOne: {
+                votes: [],
+                text: "have code reviews conducted by peers",
+            },
+            optionTwo: {
+                votes: ["sarahedo"],
+                text: "have code reviews conducted by managers",
+            },
+        },
+        vthrdm985a262al8qx3do: {
+            id: "vthrdm985a262al8qx3do",
+            author: "tylermcginnis",
+            timestamp: 1489579767190,
+            optionOne: {
+                votes: ["tylermcginnis"],
+                text: "take a course on ReactJS",
+            },
+            optionTwo: {
+                votes: ["mtsamis"],
+                text: "take a course on unit testing with Jest",
+            },
+        },
+        xj352vofupe1dqz9emx13r: {
+            id: "xj352vofupe1dqz9emx13r",
+            author: "mtsamis",
+            timestamp: 1493579767190,
+            optionOne: {
+                votes: ["mtsamis", "zoshikanlu"],
+                text: "deploy to production once every two weeks",
+            },
+            optionTwo: {
+                votes: ["tylermcginnis"],
+                text: "deploy to production once every month",
+            },
+        },
+    }),
 }
