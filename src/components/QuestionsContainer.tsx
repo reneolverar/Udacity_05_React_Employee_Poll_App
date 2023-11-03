@@ -1,7 +1,20 @@
 import Question from "./Question"
 
-export default function QuestionsContainer(props) {
-    const { title, qIds, active, onToggle } = props
+type Title = "New Questions" | "Done"
+
+type QuestionContainerProps = {
+    title: Title;
+    qIds: string[];
+    active: Boolean;
+    onToggle: (title: Title) => void;
+}
+
+export default function QuestionsContainer ({
+    title,
+    qIds,
+    active,
+    onToggle,
+}: QuestionContainerProps) {
     return (
         <div className="m-2 my-5">
             <h1

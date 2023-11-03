@@ -1,18 +1,17 @@
-import { useDispatch, useSelector } from "react-redux"
 import logo from "../assets/employee-poll-logo.png"
 import { setAuthedUser } from "../store/authedUserSlice"
 import { useLocation, useNavigate } from "react-router-dom"
+import { useAppDispatch, useAppSelector } from "../store/hooks"
 
 export default function LogIn() {
-    const users = useSelector((state) => state.users)
-    const dispatch = useDispatch()
-
+    const users = useAppSelector((state) => state.users)
+    const dispatch = useAppDispatch()
     // We are using protected routes with RequireAuth.js which sets the route the user
     // wanted to access before sending him to login page
     const navigate = useNavigate()
     const { state } = useLocation()
 
-    const handleClick = async (e) => {
+    const handleClick = async (e: React.MouseEvent<HTMLButtonElement> & {target: HTMLButtonElement}) => {
         e.preventDefault()
         await dispatch(setAuthedUser(e.target.id))
         navigate(state?.path || "/")
