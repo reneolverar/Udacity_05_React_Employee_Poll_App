@@ -26,7 +26,6 @@ describe("_saveQuestion & saveQuestion", () => {
     const optionOneText = "text 1"
     const optionTwoText = "text 2"
     const newQuestion = { author, optionOneText, optionTwoText }
-
     it("will reject if all fields are not passed", async () => {
         const incompleteQuestion1 = { author }
         const incompleteQuestion2 = { author, optionOneText }
@@ -46,6 +45,14 @@ describe("_saveQuestion & saveQuestion", () => {
         await expect(_saveQuestion(incompleteQuestion2)).rejects.toEqual(
             "Please provide optionOneText, optionTwoText, and author"
         )
+
+        // _DATA.js tests for _saveQuestion
+        await expect(_saveQuestion(incompleteQuestion1)).rejects.toEqual(
+            "Please provide optionOneText, optionTwoText, and author"
+        )
+        await expect(_saveQuestion(incompleteQuestion2)).rejects.toEqual(
+            "Please provide optionOneText, optionTwoText, and author"
+        )
     })
 
     it("will pass if all fields are passed", async () => {
@@ -55,28 +62,15 @@ describe("_saveQuestion & saveQuestion", () => {
         const newQuestions = await getQuestions()
         const newUsers = await getUsers()
 
-<<<<<<< HEAD
         // api.js tests for saveQuestion
         expect(savedQuestion.id).toBeDefined()
-||||||| f050edf
-=======
-        // api.js tests for saveQuestion
->>>>>>> b8a9c1574870b8ed8215fb36c60a33ee076b5fbb
         expect(savedQuestion.author).toBe(author)
         expect(savedQuestion.timestamp).toBeDefined()
         expect(savedQuestion.optionOne.text).toBe(optionOneText)
         expect(savedQuestion.optionTwo.text).toBe(optionTwoText)
-<<<<<<< HEAD
         expect(savedQuestion.optionOne.votes.length).toBe(0)
         expect(savedQuestion.optionTwo.votes.length).toBe(0)
-||||||| f050edf
-
-        const newQuestions = await getQuestions()
-        const newUsers = await getUsers()
-=======
->>>>>>> b8a9c1574870b8ed8215fb36c60a33ee076b5fbb
         expect(newQuestions.byId[savedQuestion.id]).toEqual(savedQuestion)
-<<<<<<< HEAD
         expect(newUsers.byId[author].questions.includes(savedQuestion.id)).toBe(
             true
         )
@@ -93,9 +87,7 @@ describe("_saveQuestion & saveQuestion", () => {
         expect(
             newUsers.byId[author].questions.includes(_savedQuestion.id)
         ).toBe(true)
-||||||| f050edf
         expect(newUsers.byId[author].questions.includes(savedQuestion.id)).toBe(true)
-=======
         expect(newUsers.byId[author].questions.includes(savedQuestion.id)).toBe(
             true
         )
@@ -108,7 +100,6 @@ describe("_saveQuestion & saveQuestion", () => {
         expect(
             newUsers.byId[author].questions.includes(_savedQuestion.id)
         ).toBe(true)
->>>>>>> b8a9c1574870b8ed8215fb36c60a33ee076b5fbb
     })
 })
 
