@@ -1,3 +1,5 @@
+import cloneDeep from "lodash/cloneDeep"
+
 let users = {
     sarahedo: {
         id: "sarahedo",
@@ -7,8 +9,8 @@ let users = {
         answers: {
             "8xf0y6ziyjabvozdd253nd": "optionOne",
             "6ni6ok3ym7mf1p33lnez": "optionOne",
-            "am8ehyc8byjqgar0jgpub9": "optionTwo",
-            "loxhs1bqm25b708cmbf3g": "optionTwo",
+            am8ehyc8byjqgar0jgpub9: "optionTwo",
+            loxhs1bqm25b708cmbf3g: "optionTwo",
         },
         questions: ["8xf0y6ziyjabvozdd253nd", "am8ehyc8byjqgar0jgpub9"],
     },
@@ -18,8 +20,8 @@ let users = {
         name: "Tyler McGinnis",
         avatarURL: null,
         answers: {
-            "vthrdm985a262al8qx3do": "optionOne",
-            "xj352vofupe1dqz9emx13r": "optionTwo",
+            vthrdm985a262al8qx3do: "optionOne",
+            xj352vofupe1dqz9emx13r: "optionTwo",
         },
         questions: ["loxhs1bqm25b708cmbf3g", "vthrdm985a262al8qx3do"],
     },
@@ -29,8 +31,8 @@ let users = {
         name: "Mike Tsamis",
         avatarURL: null,
         answers: {
-            "xj352vofupe1dqz9emx13r": "optionOne",
-            "vthrdm985a262al8qx3do": "optionTwo",
+            xj352vofupe1dqz9emx13r: "optionOne",
+            vthrdm985a262al8qx3do: "optionTwo",
             "6ni6ok3ym7mf1p33lnez": "optionOne",
         },
         questions: ["6ni6ok3ym7mf1p33lnez", "xj352vofupe1dqz9emx13r"],
@@ -41,7 +43,7 @@ let users = {
         name: "Zenobia Oshikanlu",
         avatarURL: null,
         answers: {
-            "xj352vofupe1dqz9emx13r": "optionOne",
+            xj352vofupe1dqz9emx13r: "optionOne",
         },
         questions: [],
     },
@@ -163,35 +165,22 @@ function formatQuestion({ optionOneText, optionTwoText, author }) {
     }
 }
 
-export function _saveQuestion({author, optionOneText, optionTwoText}) {
+export function _saveQuestion(question) {
     return new Promise((resolve, reject) => {
         if (
-            !optionOneText ||
-            !optionTwoText ||
-            !author
+            !question.optionOneText ||
+            !question.optionTwoText ||
+            !question.author
         ) {
             reject("Please provide optionOneText, optionTwoText, and author")
         }
-
-        const formattedQuestion = formatQuestion({author, optionOneText, optionTwoText})
-
-        // Add questions to user (Set so no duplicates), below it is converted to array
-        const userQuestions = new Set(...users[author].questions)
-        userQuestions.add(formattedQuestion.id)
-
+        const formattedQuestion = formatQuestion(question)
+        users[question.author].questions.push(formattedQuestion.id)
         setTimeout(() => {
             questions = {
                 ...questions,
                 [formattedQuestion.id]: formattedQuestion,
             }
-            users = {
-                ...users,
-                [author]: {
-                    ...users[author],
-                    questions: [...userQuestions],
-                }
-            }
-
             resolve(formattedQuestion)
         }, 1000)
     })
